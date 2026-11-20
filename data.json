@@ -1,0 +1,160 @@
+{
+  "products": [
+    {
+      "id": "prod-1",
+      "name": "بوكيه ورد قطيفة أحمر فاخر",
+      "category": "ورد قطيفة",
+      "price": 1350,
+      "oldPrice": 1500,
+      "badge": "قطيفة فاخر",
+      "available": true,
+      "image": "images/p1_velvet.jpg",
+      "description": "بوكيه هاند ميد من الورد القطيفة الفاخر مدمج مع تل وجيبسوفيلا أبيض رقيق وشريط كتابة مخصص."
+    },
+    {
+      "id": "prod-2",
+      "name": "بوكيه ورد ستان هاند ميد",
+      "category": "ورد ستان",
+      "price": 450,
+      "oldPrice": 500,
+      "badge": "الأكثر طلباً",
+      "available": true,
+      "image": "images/p2_satin_450.jpg",
+      "description": "تنسيق ورد ستان أحمر يدوي بتغليف كوري أبيض أنيق مع ورود بيضاء وفيونكة ستان حمراء."
+    },
+    {
+      "id": "prod-3",
+      "name": "بوكيه ورد ستان ملكي كبير",
+      "category": "ورد ستان",
+      "price": 1000,
+      "oldPrice": 1200,
+      "badge": "حجم كبير",
+      "available": true,
+      "image": "images/p3_satin_1000.jpg",
+      "description": "باقة ورد ستان ملكية ضخمة باللون الأحمر مزينة بفراشة ذهبية وشريط مخصص وتغليف تول أبيض فخم."
+    },
+    {
+      "id": "prod-4",
+      "name": "بوكيه ورد ستان بتول بليسيه",
+      "category": "ورد ستان",
+      "price": 750,
+      "oldPrice": 850,
+      "badge": "تخصيص عبارة",
+      "available": true,
+      "image": "images/p4_satin_750.jpg",
+      "description": "بوكيه ورد ستان نبيتي راقي محاط بتول بليسيه أبيض مع شريط إهداء مخصص بالاسم أو العبارة."
+    },
+    {
+      "id": "prod-5",
+      "name": "بوكيه قراية فاتحة ستان",
+      "category": "ورد ستان",
+      "price": 750,
+      "oldPrice": 850,
+      "badge": "مناسبات وخطوبة",
+      "available": true,
+      "image": "images/p5_fateha_750.jpg",
+      "description": "بوكيه مخصص لمناسبات قراءة الفاتحة والخطوبة ورد ستان أحمر مع أكليريك ذهبي (قرينا الفاتحة) وتغليف أبيض."
+    },
+    {
+      "id": "prod-6",
+      "name": "بوكيه ورد فوم تخرج مع ليليوم",
+      "category": "ورد فوم",
+      "price": 650,
+      "oldPrice": 750,
+      "badge": "تخرج ومناسبات",
+      "available": true,
+      "image": "images/p6_foam_grad_650.jpg",
+      "description": "بوكيه ورد فوم بدرجات الفوشيا والأوف وايت مدمج مع زهور ليليوم ووشاح تخرج مخصص باسم ولقب الخريجة."
+    },
+    {
+      "id": "prod-7",
+      "name": "بوكيه ورد ستان عيد جواز",
+      "category": "ورد ستان",
+      "price": 380,
+      "oldPrice": 450,
+      "badge": "عرض خاص",
+      "available": true,
+      "image": "images/p7_wedding_380.jpg",
+      "description": "بوكيه هاند ميد أنيق ورد ستان أحمر ميني مع كارت إهداء عيد جواز سعيد وفراشات ذهبية رقيقة."
+    },
+    {
+      "id": "prod-8",
+      "name": "بوكيه ورد فوم عيد ميلاد بالأرقام",
+      "category": "ورد فوم",
+      "price": 850,
+      "oldPrice": 950,
+      "badge": "أعياد ميلاد",
+      "available": true,
+      "image": "images/p8_foam_bday_850.jpg",
+      "description": "باقة ورد فوم كبيرة باللونين الوردي والأبيض مع بالونات أرقام ذهبية وتاج وعبارة هابي بيرثداي."
+    },
+    {
+      "id": "prod-9",
+      "name": "بوكيه ورد صناعي فاخر مع ليليوم",
+      "category": "ورد صناعي",
+      "price": 1500,
+      "oldPrice": 1700,
+      "badge": "VIP فاخر",
+      "available": true,
+      "image": "images/p9_artif_1500.jpg",
+      "description": "تنسيق ورد صناعي مستورد فائق الجودة يجمع بين زهور الليليوم البيضاء الطبيعية الملمس والورد الجوري النبيتي."
+    },
+    {
+      "id": "prod-10",
+      "name": "بوكيه ورد صناعي مع وشاح عبارات",
+      "category": "ورد صناعي",
+      "price": 1350,
+      "oldPrice": 1500,
+      "badge": "تطريز وشاح",
+      "available": true,
+      "image": "images/p10_artif_1350.jpg",
+      "description": "بوكيه ورد صناعي بألوان الكريمي والوردي مع زهور مجففة ووشاح شريط مخصص بعبارة إهداء راقية."
+    }
+  ],
+  "reels": [
+    {
+      "id": "reel-1",
+      "num": 1,
+      "title": "بوكيه ورد روزيتا 💐",
+      "video": "videos/reel1.mp4",
+      "fallback": ""
+    },
+    {
+      "id": "reel-2",
+      "num": 2,
+      "title": "تنسيق ورد أنيق 🌸",
+      "video": "videos/reel2.mp4",
+      "fallback": ""
+    },
+    {
+      "id": "reel-3",
+      "num": 3,
+      "title": "لحظة تقديم البوكيه 🎁",
+      "video": "videos/reel3.mp4",
+      "fallback": ""
+    },
+    {
+      "id": "reel-4",
+      "num": 4,
+      "title": "بوكيه ورد كلاسيك 🌹",
+      "video": "videos/reel4.mp4",
+      "fallback": ""
+    }
+  ],
+  "settings": {
+    "pin": "2025",
+    "whatsapp": "201000000000",
+    "facebook": "https://www.facebook.com/rwzyta.hand.myd",
+    "bot": {
+      "telegram": {
+        "enabled": false,
+        "token": "",
+        "chatId": ""
+      },
+      "webhook": {
+        "enabled": false,
+        "url": ""
+      }
+    }
+  }
+}

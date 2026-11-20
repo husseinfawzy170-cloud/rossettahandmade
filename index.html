@@ -617,6 +617,31 @@
 
       <!-- Admin Body -->
       <div class="flex-1 overflow-y-auto p-5 sm:p-7 space-y-6">
+        <!-- Live Publishing Header Bar -->
+        <div class="bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 text-white rounded-2xl sm:rounded-3xl p-4 sm:p-5 shadow-lg border border-emerald-500/40 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="flex items-center gap-3 text-center sm:text-right">
+            <div class="w-11 h-11 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center shrink-0 shadow-inner">
+              <i data-lucide="cloud-lightning" class="w-5 h-5 text-yellow-300"></i>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 justify-center sm:justify-start">
+                <h4 class="text-sm sm:text-base font-black">نشر التعديلات لايف للعالم (GitHub & Vercel)</h4>
+                <span id="github-publish-indicator" class="px-2 py-0.5 rounded-full text-[10px] font-black bg-white/20 text-white">جاهز للنشر</span>
+              </div>
+              <p class="text-xs text-white/85 mt-0.5">اضغط لنشر أي تعديل في الأسعار أو المنتجات أو الفيديوهات ليظهر فوراً لكل زوار الموقع حول العالم</p>
+            </div>
+          </div>
+          <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto justify-end">
+            <button type="button" id="export-data-json-btn" class="px-3.5 py-2 rounded-xl bg-white/15 hover:bg-white/25 text-white text-xs font-bold transition-colors flex items-center gap-1.5" title="تحميل ملف البيانات">
+              <i data-lucide="download" class="w-3.5 h-3.5"></i>
+              <span>تصدير ملف data.json</span>
+            </button>
+            <button type="button" id="publish-live-btn" class="flex-1 sm:flex-none px-5 py-2.5 rounded-xl bg-yellow-400 hover:bg-yellow-300 text-gray-900 text-xs sm:text-sm font-black transition-all shadow-md flex items-center justify-center gap-2 hover:scale-105 active:scale-95">
+              <i data-lucide="upload-cloud" class="w-4 h-4"></i>
+              <span>نشر لايف للجميع 🚀</span>
+            </button>
+          </div>
+        </div>
         <!-- Tab 1: Products -->
         <div id="admin-tab-products" class="space-y-6">
           <!-- Stats -->
@@ -926,6 +951,25 @@
                 <input id="set-fb" type="url"
                        class="w-full px-3.5 py-2.5 rounded-xl border border-pink-200 text-sm focus:outline-none focus:border-[#D81B60]" />
               </div>
+
+              <!-- GitHub Live Publishing Token -->
+              <div class="pt-4 border-t border-pink-100 space-y-2">
+                <div class="flex items-center gap-2">
+                  <i data-lucide="key" class="w-4 h-4 text-[#D81B60]"></i>
+                  <h5 class="text-xs font-black text-[#1A0A14]">مفتاح النشر المباشر (GitHub Personal Access Token)</h5>
+                </div>
+                <p class="text-[11px] text-[#1A0A14]/70 leading-relaxed">
+                  يسمح لك بالنشر المباشر من لوحة التحكم لتظهر كل تعديلاتك فوراً لكل زوار الموقع على Vercel و GitHub بنقرة زر واحدة.
+                </p>
+                <div>
+                  <input id="set-github-token" type="password" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx"
+                         class="w-full px-3.5 py-2.5 rounded-xl border border-pink-200 text-xs font-mono bg-[#FFF5F7]/30 focus:outline-none focus:border-[#D81B60]" dir="ltr" />
+                  <p class="text-[10px] text-gray-500 mt-1">
+                    احصل عليه مجاناً من GitHub: Settings &gt; Developer Settings &gt; Personal access tokens (classic) &gt; Generate new token وضع علامة على <b>repo</b>.
+                  </p>
+                </div>
+              </div>
+
               <button type="submit"
                       class="px-6 py-2.5 rounded-xl bg-[#D81B60] hover:bg-[#AD1457] text-white font-bold text-sm transition-colors">
                 حفظ الإعدادات
@@ -1099,6 +1143,7 @@
       pin: "2025",
       whatsapp: "201000000000",
       facebook: "https://www.facebook.com/rwzyta.hand.myd",
+      githubToken: "",
       bot: {
         telegram: {
           enabled: false,
@@ -1524,6 +1569,8 @@
       document.getElementById("set-pin").value = state.settings.pin;
       document.getElementById("set-whatsapp").value = state.settings.whatsapp;
       document.getElementById("set-fb").value = state.settings.facebook;
+      const ghInput = document.getElementById("set-github-token");
+      if (ghInput) ghInput.value = (state.settings && state.settings.githubToken) || localStorage.getItem("rossetta_github_token") || "";
 
       // Populate Bot Settings
       const bot = (state.settings && state.settings.bot) || DEFAULT_SETTINGS.bot;
@@ -1929,9 +1976,12 @@
       state.settings.whatsapp = rawWa;
       document.getElementById("set-whatsapp").value = rawWa;
       state.settings.facebook = document.getElementById("set-fb").value.trim() || "https://www.facebook.com/rwzyta.hand.myd";
+      const ghToken = document.getElementById("set-github-token").value.trim();
+      state.settings.githubToken = ghToken;
+      try { localStorage.setItem("rossetta_github_token", ghToken); } catch(e){}
       safeSave(STORAGE_KEYS.settings, state.settings);
       document.getElementById("social-fb-link").href = state.settings.facebook;
-      showToast("تم حفظ إعدادات المتجر بنجاح");
+      showToast("تم حفظ إعدادات المتجر ومفتاح النشر بنجاح");
     });
 
     // ==========================================
@@ -2516,6 +2566,152 @@
       }
     }
 
+    // ==========================================
+    // Live Remote Data & GitHub Live Publishing
+    // ==========================================
+    async function loadRemoteData() {
+      try {
+        const res = await fetch("data.json?t=" + Date.now());
+        if (res.ok) {
+          const remote = await res.json();
+          let shouldReRender = false;
+          if (remote.products && Array.isArray(remote.products) && remote.products.length > 0) {
+            state.products = remote.products;
+            shouldReRender = true;
+          }
+          if (remote.reels && Array.isArray(remote.reels) && remote.reels.length === 4) {
+            state.reels = remote.reels;
+            shouldReRender = true;
+          }
+          if (remote.settings) {
+            state.settings = { ...state.settings, ...remote.settings };
+          }
+          if (shouldReRender) {
+            renderProducts();
+            renderCustomerReels();
+            initHeroSlider();
+            if (state.adminUnlocked) {
+              renderAdmin();
+            }
+          }
+        }
+      } catch (e) {
+        console.warn("Using bundled defaults or offline cache");
+      }
+    }
+
+    async function publishToGitHubLive() {
+      let token = (state.settings && state.settings.githubToken) || localStorage.getItem("rossetta_github_token") || "";
+
+      if (!token) {
+        const inputToken = prompt(
+          "للنشر المباشر للعالم بضغطة زر، يرجى إدخال GitHub Personal Access Token الخاص بحسابك:\n\n(يُدخل لمرة واحدة فقط ويُحفظ بأمان في متصفحك):"
+        );
+        if (!inputToken || !inputToken.trim()) {
+          showToast("تم إلغاء النشر. يمكنك أيضاً استخدام زر 'تصدير ملف data.json'");
+          return;
+        }
+        token = inputToken.trim();
+        if (!state.settings) state.settings = {};
+        state.settings.githubToken = token;
+        safeSave(STORAGE_KEYS.settings, state.settings);
+        try { localStorage.setItem("rossetta_github_token", token); } catch(e){}
+        const el = document.getElementById("set-github-token");
+        if (el) el.value = token;
+      }
+
+      const repo = "husseinfawzy170-cloud/rossettahandmade";
+      const filePath = "data.json";
+
+      showToast("جاري الاتصال بـ GitHub ونشر التعديلات لايف... ⏳");
+
+      try {
+        let sha = "";
+        try {
+          const checkRes = await fetch(`https://api.github.com/repos/${repo}/contents/${filePath}?ref=main`, {
+            headers: {
+              "Authorization": `Bearer ${token}`,
+              "Accept": "application/vnd.github.v3+json"
+            }
+          });
+          if (checkRes.ok) {
+            const fileData = await checkRes.json();
+            sha = fileData.sha || "";
+          }
+        } catch (e) {}
+
+        const updatedData = {
+          products: state.products,
+          reels: state.reels,
+          settings: {
+            pin: state.settings.pin,
+            whatsapp: state.settings.whatsapp,
+            facebook: state.settings.facebook,
+            bot: state.settings.bot
+          }
+        };
+
+        const jsonString = JSON.stringify(updatedData, null, 2);
+        const base64Content = btoa(unescape(encodeURIComponent(jsonString)));
+
+        const bodyData = {
+          message: "تحديث محتوى المتجر عبر لوحة تحكم روزيتا 🌸",
+          content: base64Content,
+          branch: "main"
+        };
+        if (sha) bodyData.sha = sha;
+
+        const putRes = await fetch(`https://api.github.com/repos/${repo}/contents/${filePath}`, {
+          method: "PUT",
+          headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json",
+            "Accept": "application/vnd.github.v3+json"
+          },
+          body: JSON.stringify(bodyData)
+        });
+
+        if (putRes.ok) {
+          showToast("🎉 تم النشر بنجاح! تم تحديث الموقع وسيظهر لكل الناس في العالم خلال ثوانٍ 🚀");
+          const ind = document.getElementById("github-publish-indicator");
+          if (ind) {
+            ind.textContent = "تم النشر بنجاح ✅";
+            ind.className = "px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-400 text-gray-900";
+          }
+        } else {
+          const errData = await putRes.json();
+          console.error("GitHub API error:", errData);
+          showToast("خطأ في النشر: " + (errData.message || "تأكد من صلاحيات مفتاح GitHub"));
+        }
+      } catch (err) {
+        console.error("Publish error:", err);
+        showToast("تعذر الاتصال بـ GitHub. تحقق من اتصال الإنترنت أو استخدم زر تصدير data.json.");
+      }
+    }
+
+    function exportDataJson() {
+      const data = {
+        products: state.products,
+        reels: state.reels,
+        settings: {
+          pin: state.settings.pin,
+          whatsapp: state.settings.whatsapp,
+          facebook: state.settings.facebook,
+          bot: state.settings.bot
+        }
+      };
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "data.json";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      showToast("تم تنزيل ملف data.json المحدث بنجاح! 📥");
+    }
+
     // Init
     window.addEventListener("DOMContentLoaded", () => {
       document.getElementById("social-fb-link").href = state.settings.facebook || "https://www.facebook.com/rwzyta.hand.myd";
@@ -2526,7 +2722,18 @@
       initReelsStorage(); // Loads persistent custom reels from IndexedDB on refresh
       initBotHandlers();
       updateBotUIState();
+      loadRemoteData(); // Live sync from data.json
       lucide.createIcons();
+
+      const pubLiveBtn = document.getElementById("publish-live-btn");
+      if (pubLiveBtn) {
+        pubLiveBtn.addEventListener("click", publishToGitHubLive);
+      }
+
+      const expDataBtn = document.getElementById("export-data-json-btn");
+      if (expDataBtn) {
+        expDataBtn.addEventListener("click", exportDataJson);
+      }
 
       const resetAllReelsBtn = document.getElementById("reset-all-reels-btn");
       if (resetAllReelsBtn) {
