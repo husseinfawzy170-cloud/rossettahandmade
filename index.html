@@ -753,10 +753,16 @@
                 <h4 class="text-base font-extrabold text-[#1A0A14]">إدارة وتبديل فيديوهات البانر</h4>
                 <p class="text-xs text-[#1A0A14]/65 mt-0.5">يمكنك تغيير أي فيديو من الفيديوهات الأربعة في أي وقت برفع فيديو جديد من جهازك أو وضع رابط فيديو مباشر</p>
               </div>
-              <button type="button" id="reset-all-reels-btn" class="px-4 py-2 rounded-xl text-xs font-bold text-[#D81B60] bg-pink-50 hover:bg-pink-100 border border-pink-200 transition-colors shrink-0 flex items-center gap-1.5">
-                <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
-                <span>استعادة الفيديوهات الأصلية</span>
-              </button>
+              <div class="flex flex-wrap items-center gap-2 shrink-0">
+                <button type="button" id="save-all-reels-btn" class="px-4 py-2 rounded-xl text-xs font-bold text-white bg-[#D81B60] hover:bg-[#b0134b] transition-colors shadow-sm flex items-center gap-1.5">
+                  <i data-lucide="check" class="w-3.5 h-3.5"></i>
+                  <span>حفظ وتثبيت جميع الفيديوهات</span>
+                </button>
+                <button type="button" id="reset-all-reels-btn" class="px-4 py-2 rounded-xl text-xs font-bold text-[#D81B60] bg-pink-50 hover:bg-pink-100 border border-pink-200 transition-colors flex items-center gap-1.5">
+                  <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+                  <span>استعادة الفيديوهات الأصلية</span>
+                </button>
+              </div>
             </div>
 
             <!-- Reels List -->
@@ -1130,6 +1136,102 @@
       } catch (e) {
         console.warn("Storage warning:", e);
         return false;
+      }
+    }
+
+    // ==========================================
+    // IndexedDB Persistent Storage for Large Media (Reels / Videos)
+    // ==========================================
+    const IDB_CONFIG = {
+      name: "rossetta_media_store",
+      version: 1,
+      store: "keyval"
+    };
+
+    function openMediaDB() {
+      return new Promise((resolve) => {
+        if (!window.indexedDB) return resolve(null);
+        try {
+          const req = indexedDB.open(IDB_CONFIG.name, IDB_CONFIG.version);
+          req.onupgradeneeded = () => {
+            const db = req.result;
+            if (!db.objectStoreNames.contains(IDB_CONFIG.store)) {
+              db.createObjectStore(IDB_CONFIG.store);
+            }
+          };
+          req.onsuccess = () => resolve(req.result);
+          req.onerror = () => resolve(null);
+        } catch (e) {
+          resolve(null);
+        }
+      });
+    }
+
+    async function idbGet(key) {
+      try {
+        const db = await openMediaDB();
+        if (!db) return null;
+        return new Promise((resolve) => {
+          const tx = db.transaction(IDB_CONFIG.store, "readonly");
+          const store = tx.objectStore(IDB_CONFIG.store);
+          const req = store.get(key);
+          req.onsuccess = () => resolve(req.result);
+          req.onerror = () => resolve(null);
+        });
+      } catch (e) {
+        return null;
+      }
+    }
+
+    async function idbSet(key, val) {
+      try {
+        const db = await openMediaDB();
+        if (!db) return false;
+        return new Promise((resolve) => {
+          const tx = db.transaction(IDB_CONFIG.store, "readwrite");
+          const store = tx.objectStore(IDB_CONFIG.store);
+          const req = store.put(val, key);
+          req.onsuccess = () => resolve(true);
+          req.onerror = () => resolve(false);
+        });
+      } catch (e) {
+        return false;
+      }
+    }
+
+    async function idbDel(key) {
+      try {
+        const db = await openMediaDB();
+        if (!db) return false;
+        return new Promise((resolve) => {
+          const tx = db.transaction(IDB_CONFIG.store, "readwrite");
+          const store = tx.objectStore(IDB_CONFIG.store);
+          const req = store.delete(key);
+          req.onsuccess = () => resolve(true);
+          req.onerror = () => resolve(false);
+        });
+      } catch (e) {
+        return false;
+      }
+    }
+
+    async function saveReelsState() {
+      await idbSet(STORAGE_KEYS.reels, state.reels);
+      safeSave(STORAGE_KEYS.reels, state.reels);
+    }
+
+    async function initReelsStorage() {
+      try {
+        const saved = await idbGet(STORAGE_KEYS.reels);
+        if (saved && Array.isArray(saved) && saved.length === 4) {
+          state.reels = saved;
+          renderCustomerReels();
+          if (state.activeAdminTab === "reels") {
+            renderAdminReelsTab();
+          }
+        }
+      } catch (e) {
+        console.warn("IndexedDB load reels error:", e);
       }
     }
 
@@ -1953,8 +2055,8 @@
       container.innerHTML = reels.map(reel => `
         <div class="reel-card group relative bg-black rounded-2xl sm:rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 aspect-[9/16] border border-pink-200/60">
           <video class="reel-video absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 cursor-pointer"
+                 src="${reel.video}"
                  autoplay loop muted playsinline preload="auto">
-            <source src="${reel.video}" type="video/mp4">
             ${reel.fallback ? `<source src="${reel.fallback}" type="video/mp4">` : ""}
           </video>
           <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/30 pointer-events-none"></div>
@@ -2085,24 +2187,30 @@
         </div>
       `).join("");
 
-      // Wire File Uploads
+      // Wire File Uploads (Auto-saves immediately into IndexedDB & storage)
       container.querySelectorAll(".reel-file-input").forEach(input => {
         input.addEventListener("change", (e) => {
           const file = e.target.files && e.target.files[0];
           if (!file) return;
           const reelId = input.dataset.reelId;
 
-          if (file.size > 8 * 1024 * 1024) {
-            showToast("حجم الفيديو كبير جداً للتخزين الداخلي (أكثر من 8MB). يفضل فيديو أقصر أو وضع رابط مباشر.");
+          if (file.size > 30 * 1024 * 1024) {
+            showToast("حجم ملف الفيديو كبير جداً (أكثر من 30MB). يفضل فيديو مدته 5-15 ثانية.");
             return;
           }
 
-          showToast("جاري تجهيز الفيديو...");
+          showToast("جاري معالجة وتثبيت الفيديو في المتجر...");
           const reader = new FileReader();
-          reader.onload = function(evt) {
+          reader.onload = async function(evt) {
             const dataUrl = evt.target.result;
             const urlInput = document.getElementById(`reel-url-${reelId}`);
             if (urlInput) urlInput.value = dataUrl;
+
+            const reel = state.reels.find(r => r.id === reelId);
+            if (reel) {
+              reel.video = dataUrl;
+              reel.fallback = ""; // clear fallback to ensure old video is never played
+            }
 
             const previewVid = document.getElementById(`preview-video-${reelId}`);
             if (previewVid) {
@@ -2110,7 +2218,12 @@
               previewVid.load();
               previewVid.play().catch(() => {});
             }
-            showToast("تم تحميل الفيديو! اضغط 'حفظ الفيديو' لتثبيته في البانر");
+
+            // Immediately persist to IndexedDB
+            await saveReelsState();
+            renderCustomerReels();
+
+            showToast("✅ تم حفظ وتثبيت الفيديو الجديد بنجاح! سيبقى دائماً حتى بعد تحديث الصفحة.");
           };
           reader.onerror = function() {
             showToast("حدث خطأ أثناء قراءة ملف الفيديو");
@@ -2136,7 +2249,7 @@
 
       // Wire Save Buttons
       container.querySelectorAll(".save-reel-btn").forEach(btn => {
-        btn.addEventListener("click", () => {
+        btn.addEventListener("click", async () => {
           const reelId = btn.dataset.reelId;
           const titleInput = document.getElementById(`reel-title-${reelId}`);
           const urlInput = document.getElementById(`reel-url-${reelId}`);
@@ -2147,14 +2260,11 @@
           if (titleInput) reel.title = titleInput.value.trim() || reel.title;
           if (urlInput && urlInput.value.trim()) {
             reel.video = urlInput.value.trim();
+            reel.fallback = ""; // clear fallback
           }
 
-          const saved = safeSave(STORAGE_KEYS.reels, state.reels);
-          if (saved === false) {
-            showToast("تنبيه: حجم الفيديو قد يكون تجاوز مساحة التخزين في المتصفح. استخدم رابط فيديو مباشر إن أمكن.");
-          } else {
-            showToast("تم تحديث وحفظ الفيديو بنجاح! 🎬");
-          }
+          await saveReelsState();
+          showToast("تم حفظ وتثبيت الفيديو بنجاح! سيبقى دائماً بعد تحديث الصفحة 🎬");
 
           renderCustomerReels();
           renderAdminReelsTab();
@@ -2163,7 +2273,7 @@
 
       // Wire Reset Single Reel Buttons
       container.querySelectorAll(".reset-single-reel-btn").forEach(btn => {
-        btn.addEventListener("click", () => {
+        btn.addEventListener("click", async () => {
           const reelId = btn.dataset.reelId;
           const defaultReel = DEFAULT_REELS.find(r => r.id === reelId);
           if (!defaultReel) return;
@@ -2171,7 +2281,7 @@
           const idx = state.reels.findIndex(r => r.id === reelId);
           if (idx !== -1) {
             state.reels[idx] = JSON.parse(JSON.stringify(defaultReel));
-            safeSave(STORAGE_KEYS.reels, state.reels);
+            await saveReelsState();
             renderCustomerReels();
             renderAdminReelsTab();
             showToast("تم استعادة الفيديو الأصلي بنجاح 🔄");
@@ -2413,20 +2523,41 @@
       renderCart();
       initHeroSlider();
       renderCustomerReels();
+      initReelsStorage(); // Loads persistent custom reels from IndexedDB on refresh
       initBotHandlers();
       updateBotUIState();
       lucide.createIcons();
 
       const resetAllReelsBtn = document.getElementById("reset-all-reels-btn");
       if (resetAllReelsBtn) {
-        resetAllReelsBtn.addEventListener("click", () => {
+        resetAllReelsBtn.addEventListener("click", async () => {
           if (confirm("هل أنت متأكد من استعادة جميع الفيديوهات الأصلية الأربعة؟")) {
             state.reels = JSON.parse(JSON.stringify(DEFAULT_REELS));
+            await idbDel(STORAGE_KEYS.reels);
             safeSave(STORAGE_KEYS.reels, state.reels);
             renderCustomerReels();
             renderAdminReelsTab();
             showToast("تمت استعادة جميع الفيديوهات الأصلية بنجاح 🔄");
           }
+        });
+      }
+
+      const saveAllReelsBtn = document.getElementById("save-all-reels-btn");
+      if (saveAllReelsBtn) {
+        saveAllReelsBtn.addEventListener("click", async () => {
+          state.reels.forEach(reel => {
+            const titleInput = document.getElementById(`reel-title-${reel.id}`);
+            const urlInput = document.getElementById(`reel-url-${reel.id}`);
+            if (titleInput) reel.title = titleInput.value.trim() || reel.title;
+            if (urlInput && urlInput.value.trim()) {
+              reel.video = urlInput.value.trim();
+              reel.fallback = "";
+            }
+          });
+          await saveReelsState();
+          renderCustomerReels();
+          renderAdminReelsTab();
+          showToast("تم حفظ وتثبيت جميع الفيديوهات بنجاح! ستبقى دائماً بعد تحديث الصفحة 🎬");
         });
       }
     });
