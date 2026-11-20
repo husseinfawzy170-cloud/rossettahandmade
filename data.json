@@ -169,7 +169,7 @@
     "facebook": "https://www.facebook.com/rwzyta.hand.myd",
     "bot": {
       "telegram": {
-        "enabled": false,
+        "enabled": true,
         "token": "9209029520:AAFJsEe7XGYOlB72mYl7dXf4oppUr1rD-Ys",
         "chatId": "484706830"
       },
