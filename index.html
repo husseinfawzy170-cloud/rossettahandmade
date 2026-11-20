@@ -213,9 +213,27 @@
         </p>
       </div>
 
-      <!-- Videos Grid (4 Clean Vertical Video Cards) -->
-      <div id="reels-grid-container" class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-5 lg:gap-6">
-        <!-- Rendered dynamically by renderCustomerReels() -->
+      <!-- Videos Showcase Carousel (Mobile Swipeable Slider + Desktop Grid) -->
+      <div class="relative group/reels">
+        <!-- Prev & Next Arrows (Desktop & Tablet) -->
+        <button id="reels-prev-btn" type="button" aria-label="الفيديو السابق"
+                class="hidden md:flex absolute -right-3 sm:-right-5 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white shadow-xl border border-pink-200 text-[#1A0A14] items-center justify-center hover:bg-pink-50 transition-all z-20 hover:scale-110 active:scale-95">
+          <i data-lucide="chevron-right" class="w-5 h-5 text-[#D81B60]"></i>
+        </button>
+        <button id="reels-next-btn" type="button" aria-label="الفيديو التالي"
+                class="hidden md:flex absolute -left-3 sm:-left-5 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white shadow-xl border border-pink-200 text-[#1A0A14] items-center justify-center hover:bg-pink-50 transition-all z-20 hover:scale-110 active:scale-95">
+          <i data-lucide="chevron-left" class="w-5 h-5 text-[#D81B60]"></i>
+        </button>
+
+        <!-- Carousel Track: Snap horizontal scroll on mobile, responsive 4-column grid on desktop -->
+        <div id="reels-grid-container" class="flex md:grid md:grid-cols-4 overflow-x-auto snap-x snap-mandatory scroll-smooth gap-3 sm:gap-5 lg:gap-6 pb-3 pt-1 px-1 no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0">
+          <!-- Rendered dynamically by renderCustomerReels() -->
+        </div>
+
+        <!-- Mobile Touch Dots Indicator -->
+        <div id="reels-dots" class="flex md:hidden items-center justify-center gap-1.5 mt-2">
+          <!-- Rendered dynamically -->
+        </div>
       </div>
 
       <!-- Quick WhatsApp Consultation Bar -->
@@ -605,8 +623,12 @@
       <!-- Admin Tabs -->
       <div class="bg-white/80 px-5 sm:px-7 py-2.5 border-b border-pink-100 flex items-center gap-2 overflow-x-auto no-scrollbar">
         <button type="button" data-admin-tab="products" class="admin-tab-btn px-4 py-2 rounded-full text-xs sm:text-sm font-bold bg-[#D81B60] text-white shrink-0">المنتجات والبوكيهات</button>
-        <button type="button" data-admin-tab="orders" class="admin-tab-btn px-4 py-2 rounded-full text-xs sm:text-sm font-bold bg-white text-[#1A0A14] border border-pink-200 shrink-0">الطلبات الواردة (<span id="admin-orders-count">0</span>)</button>
+        <button type="button" data-admin-tab="hero" class="admin-tab-btn px-4 py-2 rounded-full text-xs sm:text-sm font-bold bg-white text-[#1A0A14] border border-pink-200 shrink-0 inline-flex items-center gap-1.5">
+          <i data-lucide="image" class="w-3.5 h-3.5 text-[#D81B60]"></i>
+          <span>سلايدر الواجهة (<span id="admin-hero-count">4</span>)</span>
+        </button>
         <button type="button" data-admin-tab="reels" class="admin-tab-btn px-4 py-2 rounded-full text-xs sm:text-sm font-bold bg-white text-[#1A0A14] border border-pink-200 shrink-0">فيديوهات البانر (4)</button>
+        <button type="button" data-admin-tab="orders" class="admin-tab-btn px-4 py-2 rounded-full text-xs sm:text-sm font-bold bg-white text-[#1A0A14] border border-pink-200 shrink-0">الطلبات الواردة (<span id="admin-orders-count">0</span>)</button>
         <button type="button" data-admin-tab="bot" class="admin-tab-btn px-4 py-2 rounded-full text-xs sm:text-sm font-bold bg-white text-[#1A0A14] border border-pink-200 shrink-0 flex items-center gap-1.5">
           <i data-lucide="bot" class="w-3.5 h-3.5 text-[#D81B60]"></i>
           <span>بوت استقبال الطلبات</span>
@@ -763,6 +785,104 @@
               </button>
             </div>
             <div id="admin-products-list" class="space-y-3"></div>
+          </div>
+        </div>
+
+        <!-- Tab: Hero Slider (سلايدر واجهة المتجر) -->
+        <div id="admin-tab-hero" class="hidden space-y-6">
+          <div class="bg-white rounded-2xl border border-pink-100 p-5 sm:p-6 space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-pink-100 pb-4">
+              <div>
+                <h4 class="text-base font-extrabold text-[#1A0A14] flex items-center gap-2">
+                  <i data-lucide="image" class="w-5 h-5 text-[#D81B60]"></i>
+                  <span>التحكم في سلايدر واجهة المتجر (Hero Slider)</span>
+                </h4>
+                <p class="text-xs text-[#1A0A14]/65 mt-0.5">تحكم في الصور والبوكيهات التي تدور تلقائياً في السلايدر الرئيسي في أول الموقع</p>
+              </div>
+              <button type="button" id="reset-hero-slides-btn" class="px-3.5 py-1.5 rounded-xl border border-pink-200 text-xs font-bold text-gray-600 hover:text-[#D81B60] hover:bg-pink-50 transition-colors flex items-center gap-1.5 self-start sm:self-auto">
+                <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+                <span>استعادة الافتراضي</span>
+              </button>
+            </div>
+
+            <!-- Quick Add From Existing Products -->
+            <div class="bg-[#FFF0F4]/50 p-4 sm:p-5 rounded-2xl border border-pink-100 space-y-3">
+              <h5 class="text-xs sm:text-sm font-black text-[#1A0A14] flex items-center gap-2">
+                <i data-lucide="plus-circle" class="w-4 h-4 text-[#D81B60]"></i>
+                <span>إضافة شريحة سريعة من بوكيهات المتجر الحالية</span>
+              </h5>
+              <p class="text-xs text-[#1A0A14]/65">اختر أي بوكيه موجود في المتجر ليتم إدراجه فوراً في السلايدر بصورته وسعره وعنوانه:</p>
+              <div class="flex flex-col sm:flex-row items-center gap-2">
+                <select id="hero-pick-product-select" class="w-full sm:flex-1 px-3.5 py-2.5 rounded-xl border border-pink-200 text-xs bg-white focus:outline-none focus:border-[#D81B60]">
+                  <!-- Populated dynamically -->
+                </select>
+                <button type="button" id="hero-add-product-btn" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-[#D81B60] hover:bg-[#b0134b] text-white text-xs font-black transition-all flex items-center justify-center gap-1.5 shadow-sm">
+                  <i data-lucide="plus" class="w-4 h-4"></i>
+                  <span>إضافة للسلايدر</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Custom Slide Add Form (Expandable) -->
+            <details class="group bg-white rounded-2xl border border-pink-200/80 overflow-hidden shadow-sm">
+              <summary class="p-4 cursor-pointer text-xs sm:text-sm font-bold text-[#1A0A14] flex items-center justify-between hover:bg-pink-50/50 transition-colors">
+                <span class="flex items-center gap-2">
+                  <i data-lucide="sparkles" class="w-4 h-4 text-[#D81B60]"></i>
+                  <span>أو إنشاء شريحة مخصصة بصورة وعنوان جديد</span>
+                </span>
+                <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400 group-open:rotate-180 transition-transform"></i>
+              </summary>
+              <form id="hero-custom-slide-form" class="p-4 pt-2 border-t border-pink-100 space-y-3.5 bg-pink-50/20">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div>
+                    <label class="block text-[11px] font-bold text-[#1A0A14] mb-1">عنوان الشريحة *</label>
+                    <input type="text" id="hero-custom-title" required class="w-full text-xs p-2.5 rounded-xl border border-pink-200 bg-white focus:outline-none focus:border-[#D81B60]" placeholder="مثال: بوكيه ورد قطيفة فاخر">
+                  </div>
+                  <div>
+                    <label class="block text-[11px] font-bold text-[#1A0A14] mb-1">الشارة المميزة</label>
+                    <input type="text" id="hero-custom-badge" class="w-full text-xs p-2.5 rounded-xl border border-pink-200 bg-white focus:outline-none focus:border-[#D81B60]" placeholder="مثال: قطيفة فاخر / عرض خاص">
+                  </div>
+                  <div>
+                    <label class="block text-[11px] font-bold text-[#1A0A14] mb-1">السعر (ج.م) *</label>
+                    <input type="number" id="hero-custom-price" required min="0" class="w-full text-xs p-2.5 rounded-xl border border-pink-200 bg-white focus:outline-none focus:border-[#D81B60]" placeholder="1350">
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+                  <div>
+                    <label class="block text-[11px] font-bold text-[#1A0A14] mb-1">رابط الصورة (URL مباشر) أو ارفع من جهازك</label>
+                    <input type="text" id="hero-custom-url" class="w-full text-xs p-2.5 rounded-xl border border-pink-200 bg-white font-mono focus:outline-none focus:border-[#D81B60]" dir="ltr" placeholder="images/p1_velvet.jpg أو رابط">
+                  </div>
+                  <div class="flex items-center gap-3 pt-3">
+                    <label class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white border border-pink-200 hover:border-[#D81B60] text-[#D81B60] text-xs font-bold cursor-pointer transition-colors shadow-sm">
+                      <i data-lucide="upload" class="w-3.5 h-3.5"></i>
+                      <span>رفع صورة من الجهاز</span>
+                      <input type="file" id="hero-custom-file" accept="image/*" class="hidden">
+                    </label>
+                    <img id="hero-custom-preview" class="w-10 h-10 rounded-xl object-cover border border-pink-200 hidden" alt="معاينة" />
+                  </div>
+                </div>
+
+                <div class="text-left pt-2">
+                  <button type="submit" class="px-5 py-2.5 rounded-xl bg-[#0F5247] hover:bg-[#0c3f37] text-white text-xs font-black transition-all flex items-center justify-center gap-1.5 shadow-sm">
+                    <i data-lucide="plus" class="w-4 h-4"></i>
+                    <span>إضافة الشريحة المخصصة للسلايدر</span>
+                  </button>
+                </div>
+              </form>
+            </details>
+
+            <!-- Current Slides List -->
+            <div class="space-y-3">
+              <div class="flex items-center justify-between">
+                <h5 class="text-sm font-extrabold text-[#1A0A14]">الشرائح المعروضة في السلايدر حالياً (<span id="hero-slides-counter">0</span>)</h5>
+                <span class="text-xs text-gray-500">تدور كل 5 ثوانٍ تلقائياً في واجهة الموقع</span>
+              </div>
+              <div id="admin-hero-slides-list" class="space-y-3">
+                <!-- Populated dynamically by renderAdminHeroTab() -->
+              </div>
+            </div>
+
           </div>
         </div>
 
@@ -1161,12 +1281,48 @@
       }
     };
 
+    const DEFAULT_HERO_SLIDES = [
+      {
+        id: "slide-1",
+        name: "بوكيه ورد قطيفة أحمر فاخر",
+        badge: "قطيفة فاخر",
+        price: 1355,
+        image: "images/p1_velvet.jpg",
+        productId: "prod-1"
+      },
+      {
+        id: "slide-2",
+        name: "بوكيه ورد ستان هاند ميد",
+        badge: "الأكثر طلباً",
+        price: 450,
+        image: "images/p2_satin_450.jpg",
+        productId: "prod-2"
+      },
+      {
+        id: "slide-3",
+        name: "بوكيه ورد ستان ملكي كبير",
+        badge: "حجم كبير",
+        price: 1000,
+        image: "images/p3_satin_1000.jpg",
+        productId: "prod-3"
+      },
+      {
+        id: "slide-4",
+        name: "بوكيه ورد ستان بتول بليسيه",
+        badge: "تخصيص عبارة",
+        price: 750,
+        image: "images/p4_satin_750.jpg",
+        productId: "prod-4"
+      }
+    ];
+
     const STORAGE_KEYS = {
       products: "rossetta_products_v2",
       cart: "rossetta_cart_v1",
       orders: "rossetta_orders_v1",
       settings: "rossetta_settings_v1",
-      reels: "rossetta_reels_v2"
+      reels: "rossetta_reels_v2",
+      heroSlides: "rossetta_hero_slides_v1"
     };
 
     function safeLoad(key, fallback) {
@@ -1290,6 +1446,7 @@
       orders: safeLoad(STORAGE_KEYS.orders, []),
       settings: safeLoad(STORAGE_KEYS.settings, DEFAULT_SETTINGS),
       reels: safeLoad(STORAGE_KEYS.reels, DEFAULT_REELS),
+      heroSlides: safeLoad(STORAGE_KEYS.heroSlides, DEFAULT_HERO_SLIDES),
       activeCategory: "الكل",
       searchQuery: "",
       sortBy: "featured",
@@ -1346,7 +1503,7 @@
         card.className = "bg-white rounded-3xl overflow-hidden border border-pink-100 card-hover flex flex-col";
         card.innerHTML = `
           <div class="relative overflow-hidden bg-pink-50">
-            <img src="${p.image || IMG_MAP.hero}" alt="${p.name}" class="w-full h-60 object-cover transition-transform duration-300 hover:scale-105" />
+            <img src="${p.image || IMG_MAP.hero}" alt="${p.name}" loading="lazy" decoding="async" class="w-full h-60 object-cover transition-transform duration-300 hover:scale-105" />
             ${p.badge ? `<span class="absolute top-3 right-3 px-3 py-1 rounded-full text-xs font-extrabold bg-[#D81B60] text-white shadow">${p.badge}</span>` : ""}
             ${!p.available ? `<span class="absolute inset-0 bg-black/45 flex items-center justify-center text-white font-extrabold text-sm">غير متوفر مؤقتاً</span>` : ""}
           </div>
@@ -1512,6 +1669,8 @@
       document.getElementById("stat-gifts").textContent = state.products.filter(p => p.category !== "بوكيهات ورد").length;
       document.getElementById("stat-orders").textContent = state.orders.length;
       document.getElementById("admin-orders-count").textContent = state.orders.length;
+      const heroCountEl = document.getElementById("admin-hero-count");
+      if (heroCountEl) heroCountEl.textContent = state.heroSlides ? state.heroSlides.length : 0;
 
       // Render Products List in Admin
       const pList = document.getElementById("admin-products-list");
@@ -1592,7 +1751,8 @@
       if (whUrl) whUrl.value = (bot.webhook && bot.webhook.url) || "";
       updateBotUIState();
 
-      // Populate Reels
+      // Populate Hero Slides & Reels
+      renderAdminHeroTab();
       renderAdminReelsTab();
     }
 
@@ -1822,10 +1982,13 @@
             ? "admin-tab-btn px-4 py-2 rounded-full text-xs sm:text-sm font-bold bg-[#D81B60] text-white shrink-0 inline-flex items-center gap-1.5"
             : "admin-tab-btn px-4 py-2 rounded-full text-xs sm:text-sm font-bold bg-white text-[#1A0A14] border border-pink-200 shrink-0 inline-flex items-center gap-1.5";
         });
-        ["products", "orders", "reels", "bot", "settings"].forEach(t => {
+        ["products", "hero", "reels", "orders", "bot", "settings"].forEach(t => {
           const el = document.getElementById(`admin-tab-${t}`);
           if (el) el.classList.toggle("hidden", t !== state.activeAdminTab);
         });
+        if (state.activeAdminTab === "hero") {
+          renderAdminHeroTab();
+        }
         if (state.activeAdminTab === "reels") {
           renderAdminReelsTab();
         }
@@ -1996,10 +2159,13 @@
     let heroSlideTimer = null;
 
     function getHeroSlides() {
-      if (state.products && state.products.length > 0) {
-        return state.products;
+      if (state.heroSlides && state.heroSlides.length > 0) {
+        return state.heroSlides;
       }
-      return DEFAULT_PRODUCTS;
+      if (state.products && state.products.length > 0) {
+        return state.products.slice(0, 5);
+      }
+      return DEFAULT_HERO_SLIDES;
     }
 
     function renderHeroDots() {
@@ -2023,6 +2189,12 @@
       const badgeEl = document.getElementById("hero-slide-badge");
       const titleEl = document.getElementById("hero-slide-title");
       const priceEl = document.getElementById("hero-slide-price");
+      const container = document.getElementById("hero-slider-container");
+
+      if (container) {
+        container.dataset.productId = cur.productId || "";
+        container.style.cursor = cur.productId ? "pointer" : "default";
+      }
 
       if (imgEl) {
         if (animate) {
@@ -2040,7 +2212,7 @@
         }
       }
 
-      if (badgeEl) badgeEl.textContent = cur.badge || cur.category;
+      if (badgeEl) badgeEl.textContent = cur.badge || "عرض خاص";
       if (titleEl) titleEl.textContent = cur.name;
       if (priceEl) priceEl.textContent = formatEGP(cur.price);
 
@@ -2069,19 +2241,26 @@
       if (container) {
         container.addEventListener("mouseenter", stopHeroSlider);
         container.addEventListener("mouseleave", startHeroSlider);
+        container.addEventListener("click", (e) => {
+          if (e.target.closest("#hero-prev-btn") || e.target.closest("#hero-next-btn") || e.target.closest("#hero-slider-dots")) return;
+          const pid = container.dataset.productId;
+          if (pid) openProductModal(pid);
+        });
       }
 
       const prevBtn = document.getElementById("hero-prev-btn");
       const nextBtn = document.getElementById("hero-next-btn");
 
       if (prevBtn) {
-        prevBtn.addEventListener("click", () => {
+        prevBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
           showHeroSlide(currentSlideIdx - 1);
           startHeroSlider();
         });
       }
       if (nextBtn) {
-        nextBtn.addEventListener("click", () => {
+        nextBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
           showHeroSlide(currentSlideIdx + 1);
           startHeroSlider();
         });
@@ -2092,6 +2271,7 @@
         dotsContainer.addEventListener("click", e => {
           const btn = e.target.closest("[data-hero-dot]");
           if (btn) {
+            e.stopPropagation();
             showHeroSlide(Number(btn.dataset.heroDot));
             startHeroSlider();
           }
@@ -2100,18 +2280,76 @@
     }
 
     // ==========================================
-    // Customer Video Reels
+    // Admin Hero Slides Tab Management
     // ==========================================
+    function renderAdminHeroTab() {
+      const listContainer = document.getElementById("admin-hero-slides-list");
+      const counterEl = document.getElementById("hero-slides-counter");
+      const tabCountEl = document.getElementById("admin-hero-count");
+      const selectEl = document.getElementById("hero-pick-product-select");
+      if (!listContainer) return;
+
+      const slides = (state.heroSlides && state.heroSlides.length > 0) ? state.heroSlides : DEFAULT_HERO_SLIDES;
+      if (counterEl) counterEl.textContent = slides.length;
+      if (tabCountEl) tabCountEl.textContent = slides.length;
+
+      // Populate product picker dropdown
+      if (selectEl) {
+        selectEl.innerHTML = '<option value="">-- اختر بوكيه من المتجر لإضافته للسلايدر --</option>' +
+          state.products.map(p => `<option value="${p.id}">${p.name} — ${formatEGP(p.price)} (${p.category})</option>`).join("");
+      }
+
+      // Populate current slides list
+      if (slides.length === 0) {
+        listContainer.innerHTML = '<p class="text-xs text-gray-500 text-center py-6">لا توجد شرائح في السلايدر حالياً. اختر من البوكيهات بالأعلى أو اضغط استعادة الافتراضي.</p>';
+      } else {
+        listContainer.innerHTML = slides.map((slide, idx) => `
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 rounded-2xl border border-pink-100 bg-[#FFF5F7]/40" data-hero-slide-id="${slide.id}">
+            <div class="flex items-center gap-3 min-w-0">
+              <img src="${slide.image}" alt="${slide.name}" class="w-14 h-14 rounded-xl object-cover shrink-0 border border-pink-200 shadow-sm" />
+              <div class="min-w-0">
+                <div class="flex items-center gap-2 flex-wrap">
+                  <span class="text-xs font-black text-gray-400">#${idx + 1}</span>
+                  <span class="text-sm font-extrabold text-[#1A0A14] truncate">${slide.name}</span>
+                  ${slide.badge ? `<span class="text-[11px] px-2 py-0.5 rounded-full bg-pink-100 text-[#D81B60] font-bold">${slide.badge}</span>` : ""}
+                </div>
+                <div class="text-xs font-extrabold text-[#0F5247] mt-0.5">${formatEGP(slide.price)}</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0 self-end sm:self-auto">
+              <button type="button" class="hero-move-up-btn p-2 rounded-xl text-xs font-bold bg-white border border-pink-200 text-gray-700 hover:bg-pink-50 transition-colors ${idx === 0 ? 'opacity-30 cursor-not-allowed' : ''}" data-idx="${idx}" title="تحريك لأعلى">
+                <i data-lucide="arrow-up" class="w-3.5 h-3.5"></i>
+              </button>
+              <button type="button" class="hero-move-down-btn p-2 rounded-xl text-xs font-bold bg-white border border-pink-200 text-gray-700 hover:bg-pink-50 transition-colors ${idx === slides.length - 1 ? 'opacity-30 cursor-not-allowed' : ''}" data-idx="${idx}" title="تحريك لأسفل">
+                <i data-lucide="arrow-down" class="w-3.5 h-3.5"></i>
+              </button>
+              <button type="button" class="hero-del-slide-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-red-50 text-red-600 hover:bg-red-100 transition-colors flex items-center gap-1" data-idx="${idx}">
+                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                <span>حذف</span>
+              </button>
+            </div>
+          </div>
+        `).join("");
+      }
+
+      if (window.lucide) lucide.createIcons();
+    }
+
+    // ==========================================
+    // Customer Video Reels (Mobile Swipeable Slider + Desktop Grid)
+    // ==========================================
+    let reelsObserver = null;
+
     function renderCustomerReels() {
       const container = document.getElementById("reels-grid-container");
       if (!container) return;
       const reels = (state.reels && state.reels.length === 4) ? state.reels : DEFAULT_REELS;
 
-      container.innerHTML = reels.map(reel => `
-        <div class="reel-card group relative bg-black rounded-2xl sm:rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 aspect-[9/16] border border-pink-200/60">
+      container.innerHTML = reels.map((reel, idx) => `
+        <div class="reel-card group relative bg-black rounded-2xl sm:rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 aspect-[9/16] border border-pink-200/60 shrink-0 w-[78vw] max-w-[285px] snap-center md:w-auto" data-reel-idx="${idx}">
           <video class="reel-video absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 cursor-pointer"
                  src="${reel.video}"
-                 autoplay loop muted playsinline preload="auto">
+                 loop muted playsinline preload="metadata">
             ${reel.fallback ? `<source src="${reel.fallback}" type="video/mp4">` : ""}
           </video>
           <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/30 pointer-events-none"></div>
@@ -2132,23 +2370,97 @@
         </div>
       `).join("");
 
+      // Render dots for mobile slider
+      const dotsContainer = document.getElementById("reels-dots");
+      if (dotsContainer) {
+        dotsContainer.innerHTML = reels.map((_, i) => `
+          <button type="button" data-reel-dot="${i}" class="reel-dot h-2 rounded-full transition-all ${i === 0 ? 'w-5 bg-[#D81B60]' : 'w-2 bg-pink-200'}" aria-label="فيديو ${i+1}"></button>
+        `).join("");
+      }
+
       initCustomerReels();
       if (window.lucide) lucide.createIcons();
     }
 
     function initCustomerReels() {
+      const container = document.getElementById("reels-grid-container");
       const cards = document.querySelectorAll(".reel-card");
+      if (!cards.length) return;
+
+      if (reelsObserver) {
+        reelsObserver.disconnect();
+        reelsObserver = null;
+      }
+
+      const isMobile = window.innerWidth < 768;
+
+      // Smart Intersection Observer: Only plays the video currently in view!
+      // This saves CPU, RAM, and mobile battery, completely eliminating stutter.
+      if ("IntersectionObserver" in window) {
+        reelsObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            const video = entry.target.querySelector(".reel-video");
+            if (!video) return;
+            if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+              video.play().catch(() => {});
+              const idx = entry.target.dataset.reelIdx;
+              updateReelDots(Number(idx));
+            } else {
+              video.pause();
+            }
+          });
+        }, {
+          root: isMobile ? container : null,
+          threshold: [0.3, 0.6]
+        });
+
+        cards.forEach(card => reelsObserver.observe(card));
+      } else {
+        const firstVideo = cards[0]?.querySelector(".reel-video");
+        if (firstVideo) firstVideo.play().catch(() => {});
+      }
+
+      // Prev & Next Buttons
+      const prevBtn = document.getElementById("reels-prev-btn");
+      const nextBtn = document.getElementById("reels-next-btn");
+      if (prevBtn && container) {
+        prevBtn.onclick = () => {
+          const w = container.clientWidth * 0.75;
+          container.scrollBy({ left: w, behavior: "smooth" });
+        };
+      }
+      if (nextBtn && container) {
+        nextBtn.onclick = () => {
+          const w = container.clientWidth * 0.75;
+          container.scrollBy({ left: -w, behavior: "smooth" });
+        };
+      }
+
+      // Touch Dots Click
+      const dotsContainer = document.getElementById("reels-dots");
+      if (dotsContainer && container) {
+        dotsContainer.onclick = (e) => {
+          const dot = e.target.closest("[data-reel-dot]");
+          if (dot) {
+            const idx = Number(dot.dataset.reelDot);
+            const targetCard = cards[idx];
+            if (targetCard) {
+              targetCard.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+            }
+          }
+        };
+      }
+
+      // Wire mute toggles and tap-to-pause
       cards.forEach(card => {
         const video = card.querySelector(".reel-video");
         const muteBtn = card.querySelector(".reel-mute-btn");
         if (!video) return;
 
-        // Ensure video is muted for reliable mobile autoplay
         video.muted = true;
-        video.play().catch(() => {});
 
         if (muteBtn) {
-          muteBtn.addEventListener("click", (e) => {
+          muteBtn.onclick = (e) => {
             e.stopPropagation();
             video.muted = !video.muted;
             if (video.muted) {
@@ -2158,17 +2470,22 @@
               video.play().catch(() => {});
             }
             if (window.lucide) lucide.createIcons();
-          });
+          };
         }
 
-        // Tap video to toggle play/pause
-        video.addEventListener("click", () => {
+        video.onclick = () => {
           if (video.paused) {
             video.play().catch(() => {});
           } else {
             video.pause();
           }
-        });
+        };
+      });
+    }
+
+    function updateReelDots(activeIdx) {
+      document.querySelectorAll(".reel-dot").forEach((d, i) => {
+        d.className = `reel-dot h-2 rounded-full transition-all ${i === activeIdx ? 'w-5 bg-[#D81B60]' : 'w-2 bg-pink-200'}`;
       });
     }
 
@@ -2588,6 +2905,11 @@
             state.reels = remote.reels;
             shouldReRender = true;
           }
+          if (remote.heroSlides && Array.isArray(remote.heroSlides) && remote.heroSlides.length > 0) {
+            state.heroSlides = remote.heroSlides;
+            safeSave(STORAGE_KEYS.heroSlides, state.heroSlides);
+            shouldReRender = true;
+          }
           if (remote.settings) {
             state.settings = { ...state.settings, ...remote.settings };
           }
@@ -2719,6 +3041,7 @@
         const updatedData = {
           products: state.products,
           reels: state.reels,
+          heroSlides: (state.heroSlides && state.heroSlides.length > 0) ? state.heroSlides : DEFAULT_HERO_SLIDES,
           settings: {
             pin: state.settings.pin,
             whatsapp: state.settings.whatsapp,
@@ -2803,6 +3126,7 @@
       const data = {
         products: state.products,
         reels: state.reels,
+        heroSlides: (state.heroSlides && state.heroSlides.length > 0) ? state.heroSlides : DEFAULT_HERO_SLIDES,
         settings: {
           pin: state.settings.pin,
           whatsapp: state.settings.whatsapp,
@@ -2862,6 +3186,149 @@
             renderCustomerReels();
             renderAdminReelsTab();
             showToast("تمت استعادة جميع الفيديوهات الأصلية بنجاح 🔄");
+          }
+        });
+      }
+
+      // Hero Slider Admin Event Listeners
+      const heroAddProdBtn = document.getElementById("hero-add-product-btn");
+      if (heroAddProdBtn) {
+        heroAddProdBtn.addEventListener("click", () => {
+          const sel = document.getElementById("hero-pick-product-select");
+          if (!sel || !sel.value) {
+            showToast("يرجى اختيار بوكيه أولاً من القائمة");
+            return;
+          }
+          const p = state.products.find(x => x.id === sel.value);
+          if (!p) return;
+          if (!state.heroSlides) state.heroSlides = [];
+          state.heroSlides.push({
+            id: "slide-" + Date.now(),
+            name: p.name,
+            badge: p.badge || p.category,
+            price: p.price,
+            image: p.image,
+            productId: p.id
+          });
+          safeSave(STORAGE_KEYS.heroSlides, state.heroSlides);
+          renderAdminHeroTab();
+          renderAdmin();
+          showHeroSlide(state.heroSlides.length - 1);
+          showToast(`تمت إضافة "${p.name}" إلى سلايدر الواجهة ✅`);
+        });
+      }
+
+      let heroCustomImageBase64 = "";
+      const heroCustomFileInput = document.getElementById("hero-custom-file");
+      if (heroCustomFileInput) {
+        heroCustomFileInput.addEventListener("change", (e) => {
+          const file = e.target.files && e.target.files[0];
+          if (!file) return;
+          const reader = new FileReader();
+          reader.onload = (evt) => {
+            heroCustomImageBase64 = evt.target.result;
+            const prev = document.getElementById("hero-custom-preview");
+            if (prev) {
+              prev.src = heroCustomImageBase64;
+              prev.classList.remove("hidden");
+            }
+            showToast("تم اختيار الصورة بنجاح ✅");
+          };
+          reader.readAsDataURL(file);
+        });
+      }
+
+      const heroCustomForm = document.getElementById("hero-custom-slide-form");
+      if (heroCustomForm) {
+        heroCustomForm.addEventListener("submit", (e) => {
+          e.preventDefault();
+          const title = document.getElementById("hero-custom-title").value.trim();
+          const badge = document.getElementById("hero-custom-badge").value.trim();
+          const price = Number(document.getElementById("hero-custom-price").value) || 0;
+          const url = document.getElementById("hero-custom-url").value.trim();
+          const img = heroCustomImageBase64 || url || (state.products[0] ? state.products[0].image : "images/p1_velvet.jpg");
+
+          if (!title) {
+            showToast("يرجى إدخال عنوان الشريحة");
+            return;
+          }
+
+          if (!state.heroSlides) state.heroSlides = [];
+          state.heroSlides.push({
+            id: "slide-" + Date.now(),
+            name: title,
+            badge: badge || "عرض خاص",
+            price: price,
+            image: img
+          });
+
+          safeSave(STORAGE_KEYS.heroSlides, state.heroSlides);
+          renderAdminHeroTab();
+          renderAdmin();
+          showHeroSlide(state.heroSlides.length - 1);
+          heroCustomForm.reset();
+          heroCustomImageBase64 = "";
+          const prev = document.getElementById("hero-custom-preview");
+          if (prev) prev.classList.add("hidden");
+          showToast(`تمت إضافة شريحة "${title}" بنجاح! 🌸`);
+        });
+      }
+
+      const heroList = document.getElementById("admin-hero-slides-list");
+      if (heroList) {
+        heroList.addEventListener("click", (e) => {
+          const delBtn = e.target.closest(".hero-del-slide-btn");
+          if (delBtn) {
+            const idx = Number(delBtn.dataset.idx);
+            if (state.heroSlides && state.heroSlides[idx]) {
+              const name = state.heroSlides[idx].name;
+              state.heroSlides.splice(idx, 1);
+              safeSave(STORAGE_KEYS.heroSlides, state.heroSlides);
+              renderAdminHeroTab();
+              renderAdmin();
+              showHeroSlide(0);
+              showToast(`تم حذف "${name}" من السلايدر`);
+            }
+            return;
+          }
+          const upBtn = e.target.closest(".hero-move-up-btn");
+          if (upBtn) {
+            const idx = Number(upBtn.dataset.idx);
+            if (idx > 0 && state.heroSlides) {
+              const temp = state.heroSlides[idx];
+              state.heroSlides[idx] = state.heroSlides[idx - 1];
+              state.heroSlides[idx - 1] = temp;
+              safeSave(STORAGE_KEYS.heroSlides, state.heroSlides);
+              renderAdminHeroTab();
+              showHeroSlide(idx - 1);
+            }
+            return;
+          }
+          const downBtn = e.target.closest(".hero-move-down-btn");
+          if (downBtn) {
+            const idx = Number(downBtn.dataset.idx);
+            if (state.heroSlides && idx < state.heroSlides.length - 1) {
+              const temp = state.heroSlides[idx];
+              state.heroSlides[idx] = state.heroSlides[idx + 1];
+              state.heroSlides[idx + 1] = temp;
+              safeSave(STORAGE_KEYS.heroSlides, state.heroSlides);
+              renderAdminHeroTab();
+              showHeroSlide(idx + 1);
+            }
+          }
+        });
+      }
+
+      const resetHeroBtn = document.getElementById("reset-hero-slides-btn");
+      if (resetHeroBtn) {
+        resetHeroBtn.addEventListener("click", () => {
+          if (confirm("هل تريد استعادة شرائح السلايدر الافتراضية؟")) {
+            state.heroSlides = JSON.parse(JSON.stringify(DEFAULT_HERO_SLIDES));
+            safeSave(STORAGE_KEYS.heroSlides, state.heroSlides);
+            renderAdminHeroTab();
+            renderAdmin();
+            showHeroSlide(0);
+            showToast("تمت استعادة شرائح السلايدر الافتراضية بنجاح 🔄");
           }
         });
       }
