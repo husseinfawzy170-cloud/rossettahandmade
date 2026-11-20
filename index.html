@@ -110,7 +110,7 @@
   <!-- Hero Section -->
   <section id="hero" class="relative overflow-hidden bg-gradient-to-b from-[#FDD5DD]/70 via-[#FFF5F7] to-[#FFF5F7] py-10 sm:py-16">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-      <div class="lg:col-span-6 space-y-5 text-center lg:text-right">
+      <div class="lg:col-span-5 space-y-5 text-center lg:text-right">
         <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/90 border border-pink-200 text-xs sm:text-sm font-bold text-[#0F5247] shadow-sm">
           <i data-lucide="sparkles" class="w-4 h-4 text-[#D81B60]"></i>
           <span>هاند ميد بتفاصيلك الخاصة — سوهاج، مصر</span>
@@ -154,38 +154,30 @@
         </div>
       </div>
 
-      <div class="lg:col-span-6">
-        <div id="hero-slider-container" class="relative rounded-3xl overflow-hidden shadow-2xl shadow-pink-500/15 border-4 border-white bg-gradient-to-b from-pink-50/50 to-white aspect-[4/3] sm:aspect-[16/11]">
+      <div class="lg:col-span-7 w-full">
+        <div id="hero-slider-container" class="relative rounded-3xl overflow-hidden shadow-2xl shadow-pink-500/15 border-4 border-white bg-gradient-to-b from-pink-50/50 to-white aspect-[16/10] sm:aspect-[16/9] w-full">
           <!-- Slider Image -->
-          <div class="w-full h-full relative overflow-hidden flex items-center justify-center">
+          <div class="w-full h-full relative overflow-hidden flex items-center justify-center bg-gray-950/5">
             <img id="hero-slide-img"
-                 src="images/p1_velvet.jpg"
-                 alt="بوكيه روزيتا"
+                 src="images/banner1_hd.jpg"
+                 alt="روزيتا هاند ميد"
                  class="w-full h-full object-cover transition-all duration-700 ease-out" />
           </div>
 
           <!-- Slide Nav Buttons -->
           <button id="hero-prev-btn" type="button" aria-label="الصورة السابقة"
-                  class="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/90 hover:bg-white text-[#1A0A14] shadow-lg flex items-center justify-center transition-all hover:scale-110 z-20">
-            <i data-lucide="chevron-right" class="w-5 h-5"></i>
+                  class="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-white/90 hover:bg-white text-[#1A0A14] shadow-lg flex items-center justify-center transition-all hover:scale-110 z-20">
+            <i data-lucide="chevron-right" class="w-5 h-5 sm:w-6 sm:h-6 text-[#D81B60]"></i>
           </button>
           <button id="hero-next-btn" type="button" aria-label="الصورة التالية"
-                  class="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/90 hover:bg-white text-[#1A0A14] shadow-lg flex items-center justify-center transition-all hover:scale-110 z-20">
-            <i data-lucide="chevron-left" class="w-5 h-5"></i>
+                  class="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-white/90 hover:bg-white text-[#1A0A14] shadow-lg flex items-center justify-center transition-all hover:scale-110 z-20">
+            <i data-lucide="chevron-left" class="w-5 h-5 sm:w-6 sm:h-6 text-[#D81B60]"></i>
           </button>
 
-          <!-- Floating Info Card -->
-          <div class="absolute bottom-3 right-3 left-3 sm:left-auto sm:w-80 bg-white/95 backdrop-blur-md p-3 sm:p-3.5 rounded-2xl border border-pink-100 shadow-xl flex items-center justify-between gap-3 z-20 transition-all">
-            <div class="flex items-center gap-3 min-w-0">
-              <div class="w-10 h-10 rounded-full bg-[#FFF5F7] border border-pink-200 flex items-center justify-center text-[#D81B60] shrink-0 font-bold">
-                <i data-lucide="sparkles" class="w-5 h-5"></i>
-              </div>
-              <div class="min-w-0">
-                <div id="hero-slide-badge" class="text-[11px] font-bold text-[#D81B60]">قطيفة فاخر</div>
-                <div id="hero-slide-title" class="text-xs sm:text-sm font-extrabold text-[#1A0A14] truncate">بوكيه ورد قطيفة أحمر فاخر</div>
-              </div>
-            </div>
-            <div id="hero-slide-price" class="text-xs sm:text-sm font-extrabold text-[#0F5247] shrink-0">1,350 ج.م</div>
+          <!-- Optional Floating Caption (Only displayed if slide has a title - NO PRICES!) -->
+          <div id="hero-slide-caption-wrap" class="hidden absolute bottom-3 right-3 left-3 sm:left-auto bg-black/65 backdrop-blur-md px-4 py-2 rounded-2xl border border-white/20 text-white z-20 transition-all max-w-sm">
+            <div id="hero-slide-title" class="text-xs sm:text-sm font-black truncate"></div>
+            <div id="hero-slide-badge" class="text-[10px] text-pink-200 font-medium"></div>
           </div>
 
           <!-- Slide Dots Indicator -->
@@ -805,71 +797,69 @@
               </button>
             </div>
 
-            <!-- Quick Add From Existing Products -->
-            <div class="bg-[#FFF0F4]/50 p-4 sm:p-5 rounded-2xl border border-pink-100 space-y-3">
-              <h5 class="text-xs sm:text-sm font-black text-[#1A0A14] flex items-center gap-2">
-                <i data-lucide="plus-circle" class="w-4 h-4 text-[#D81B60]"></i>
-                <span>إضافة شريحة سريعة من بوكيهات المتجر الحالية</span>
-              </h5>
-              <p class="text-xs text-[#1A0A14]/65">اختر أي بوكيه موجود في المتجر ليتم إدراجه فوراً في السلايدر بصورته وسعره وعنوانه:</p>
-              <div class="flex flex-col sm:flex-row items-center gap-2">
-                <select id="hero-pick-product-select" class="w-full sm:flex-1 px-3.5 py-2.5 rounded-xl border border-pink-200 text-xs bg-white focus:outline-none focus:border-[#D81B60]">
-                  <!-- Populated dynamically -->
-                </select>
-                <button type="button" id="hero-add-product-btn" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-[#D81B60] hover:bg-[#b0134b] text-white text-xs font-black transition-all flex items-center justify-center gap-1.5 shadow-sm">
-                  <i data-lucide="plus" class="w-4 h-4"></i>
-                  <span>إضافة للسلايدر</span>
-                </button>
+            <!-- Main Photo Upload Form -->
+            <div class="bg-gradient-to-br from-pink-500/10 via-[#FFF0F4]/40 to-white p-5 rounded-2xl border border-pink-200 space-y-4">
+              <div class="flex items-center gap-2">
+                <i data-lucide="camera" class="w-5 h-5 text-[#D81B60]"></i>
+                <h5 class="text-sm font-black text-[#1A0A14]">رفع صورة جديدة للسلايدر بمزاجك</h5>
               </div>
-            </div>
 
-            <!-- Custom Slide Add Form (Expandable) -->
-            <details class="group bg-white rounded-2xl border border-pink-200/80 overflow-hidden shadow-sm">
-              <summary class="p-4 cursor-pointer text-xs sm:text-sm font-bold text-[#1A0A14] flex items-center justify-between hover:bg-pink-50/50 transition-colors">
-                <span class="flex items-center gap-2">
-                  <i data-lucide="sparkles" class="w-4 h-4 text-[#D81B60]"></i>
-                  <span>أو إنشاء شريحة مخصصة بصورة وعنوان جديد</span>
-                </span>
-                <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400 group-open:rotate-180 transition-transform"></i>
-              </summary>
-              <form id="hero-custom-slide-form" class="p-4 pt-2 border-t border-pink-100 space-y-3.5 bg-pink-50/20">
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <form id="hero-custom-slide-form" class="space-y-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
+                  <!-- File Upload Box -->
                   <div>
-                    <label class="block text-[11px] font-bold text-[#1A0A14] mb-1">عنوان الشريحة *</label>
-                    <input type="text" id="hero-custom-title" required class="w-full text-xs p-2.5 rounded-xl border border-pink-200 bg-white focus:outline-none focus:border-[#D81B60]" placeholder="مثال: بوكيه ورد قطيفة فاخر">
+                    <label class="block text-xs font-bold text-[#1A0A14] mb-1.5">اختر صورة من الموبايل أو الكمبيوتر (جودة عالية HD)</label>
+                    <div class="flex items-center gap-3">
+                      <label class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#D81B60] hover:bg-[#b0134b] text-white text-xs font-black cursor-pointer transition-all shadow-md hover:scale-105 active:scale-95">
+                        <i data-lucide="upload" class="w-4 h-4"></i>
+                        <span>اختر صورة من جهازك 📸</span>
+                        <input type="file" id="hero-custom-file" accept="image/*" class="hidden">
+                      </label>
+                      <img id="hero-custom-preview" class="w-14 h-14 rounded-xl object-cover border-2 border-pink-300 shadow-sm hidden" alt="معاينة الصورة" />
+                    </div>
                   </div>
+
+                  <!-- Direct URL Box (Optional) -->
                   <div>
-                    <label class="block text-[11px] font-bold text-[#1A0A14] mb-1">الشارة المميزة</label>
-                    <input type="text" id="hero-custom-badge" class="w-full text-xs p-2.5 rounded-xl border border-pink-200 bg-white focus:outline-none focus:border-[#D81B60]" placeholder="مثال: قطيفة فاخر / عرض خاص">
-                  </div>
-                  <div>
-                    <label class="block text-[11px] font-bold text-[#1A0A14] mb-1">السعر (ج.م) *</label>
-                    <input type="number" id="hero-custom-price" required min="0" class="w-full text-xs p-2.5 rounded-xl border border-pink-200 bg-white focus:outline-none focus:border-[#D81B60]" placeholder="1350">
+                    <label class="block text-xs font-bold text-[#1A0A14] mb-1.5">أو ضع رابط صورة مباشر (URL)</label>
+                    <input type="text" id="hero-custom-url" class="w-full text-xs p-2.5 rounded-xl border border-pink-200 bg-white font-mono focus:outline-none focus:border-[#D81B60]" dir="ltr" placeholder="images/banner1_hd.jpg أو رابط">
                   </div>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
-                  <div>
-                    <label class="block text-[11px] font-bold text-[#1A0A14] mb-1">رابط الصورة (URL مباشر) أو ارفع من جهازك</label>
-                    <input type="text" id="hero-custom-url" class="w-full text-xs p-2.5 rounded-xl border border-pink-200 bg-white font-mono focus:outline-none focus:border-[#D81B60]" dir="ltr" placeholder="images/p1_velvet.jpg أو رابط">
-                  </div>
-                  <div class="flex items-center gap-3 pt-3">
-                    <label class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white border border-pink-200 hover:border-[#D81B60] text-[#D81B60] text-xs font-bold cursor-pointer transition-colors shadow-sm">
-                      <i data-lucide="upload" class="w-3.5 h-3.5"></i>
-                      <span>رفع صورة من الجهاز</span>
-                      <input type="file" id="hero-custom-file" accept="image/*" class="hidden">
-                    </label>
-                    <img id="hero-custom-preview" class="w-10 h-10 rounded-xl object-cover border border-pink-200 hidden" alt="معاينة" />
-                  </div>
+                <!-- Optional Caption (No Price!) -->
+                <div>
+                  <label class="block text-xs font-bold text-[#1A0A14] mb-1">عنوان أو عبارة اختيارية (اتركه فارغاً لعرض الصورة فقط بدون أي نصوص)</label>
+                  <input type="text" id="hero-custom-title" class="w-full text-xs p-2.5 rounded-xl border border-pink-200 bg-white focus:outline-none focus:border-[#D81B60]" placeholder="اختياري — مثال: تشكيلة بوكيهات ورد فاخرة 🌸">
                 </div>
 
-                <div class="text-left pt-2">
-                  <button type="submit" class="px-5 py-2.5 rounded-xl bg-[#0F5247] hover:bg-[#0c3f37] text-white text-xs font-black transition-all flex items-center justify-center gap-1.5 shadow-sm">
+                <div class="flex items-center justify-between gap-3 pt-1">
+                  <span class="text-[11px] text-gray-500">ملاحظة: السلايدر الآن بدون أسعار لعرض صورك بشكل نقي وعريض 🌸</span>
+                  <button type="submit" class="px-6 py-2.5 rounded-xl bg-[#0F5247] hover:bg-[#0c3f37] text-white text-xs font-black transition-all flex items-center justify-center gap-1.5 shadow-md hover:scale-105 active:scale-95">
                     <i data-lucide="plus" class="w-4 h-4"></i>
-                    <span>إضافة الشريحة المخصصة للسلايدر</span>
+                    <span>إضافة الصورة للسلايدر</span>
                   </button>
                 </div>
               </form>
+            </div>
+
+            <!-- Optional: Pick Bouquet Photo from Store -->
+            <details class="group bg-white rounded-2xl border border-pink-100 overflow-hidden">
+              <summary class="p-3.5 cursor-pointer text-xs font-bold text-[#1A0A14] flex items-center justify-between hover:bg-pink-50/50 transition-colors">
+                <span class="flex items-center gap-2">
+                  <i data-lucide="image" class="w-4 h-4 text-[#D81B60]"></i>
+                  <span>أو إضافة صورة من بوكيهات المتجر الحالية</span>
+                </span>
+                <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400 group-open:rotate-180 transition-transform"></i>
+              </summary>
+              <div class="p-4 pt-1 border-t border-pink-100 flex flex-col sm:flex-row items-center gap-2">
+                <select id="hero-pick-product-select" class="w-full sm:flex-1 px-3.5 py-2.5 rounded-xl border border-pink-200 text-xs bg-white focus:outline-none focus:border-[#D81B60]">
+                  <!-- Populated dynamically -->
+                </select>
+                <button type="button" id="hero-add-product-btn" class="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-pink-100 text-[#D81B60] hover:bg-pink-200 text-xs font-bold transition-all flex items-center justify-center gap-1.5">
+                  <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                  <span>إضافة الصورة</span>
+                </button>
+              </div>
             </details>
 
             <!-- Current Slides List -->
@@ -1284,35 +1274,23 @@
     const DEFAULT_HERO_SLIDES = [
       {
         id: "slide-1",
-        name: "بوكيه ورد قطيفة أحمر فاخر",
-        badge: "قطيفة فاخر",
-        price: 1355,
-        image: "images/p1_velvet.jpg",
-        productId: "prod-1"
+        image: "images/banner1_hd.jpg",
+        name: ""
       },
       {
         id: "slide-2",
-        name: "بوكيه ورد ستان هاند ميد",
-        badge: "الأكثر طلباً",
-        price: 450,
-        image: "images/p2_satin_450.jpg",
-        productId: "prod-2"
+        image: "images/banner2_hd.jpg",
+        name: ""
       },
       {
         id: "slide-3",
-        name: "بوكيه ورد ستان ملكي كبير",
-        badge: "حجم كبير",
-        price: 1000,
-        image: "images/p3_satin_1000.jpg",
-        productId: "prod-3"
+        image: "images/banner3_hd.jpg",
+        name: ""
       },
       {
         id: "slide-4",
-        name: "بوكيه ورد ستان بتول بليسيه",
-        badge: "تخصيص عبارة",
-        price: 750,
-        image: "images/p4_satin_750.jpg",
-        productId: "prod-4"
+        image: "images/banner4_hd.jpg",
+        name: ""
       }
     ];
 
@@ -1322,7 +1300,7 @@
       orders: "rossetta_orders_v1",
       settings: "rossetta_settings_v1",
       reels: "rossetta_reels_v2",
-      heroSlides: "rossetta_hero_slides_v1"
+      heroSlides: "rossetta_hero_slides_v2"
     };
 
     function safeLoad(key, fallback) {
@@ -2186,9 +2164,9 @@
       const cur = slides[currentSlideIdx];
 
       const imgEl = document.getElementById("hero-slide-img");
-      const badgeEl = document.getElementById("hero-slide-badge");
+      const captionWrap = document.getElementById("hero-slide-caption-wrap");
       const titleEl = document.getElementById("hero-slide-title");
-      const priceEl = document.getElementById("hero-slide-price");
+      const badgeEl = document.getElementById("hero-slide-badge");
       const container = document.getElementById("hero-slider-container");
 
       if (container) {
@@ -2199,22 +2177,31 @@
       if (imgEl) {
         if (animate) {
           imgEl.style.opacity = "0.25";
-          imgEl.style.transform = "scale(0.97)";
+          imgEl.style.transform = "scale(0.98)";
           setTimeout(() => {
             imgEl.src = cur.image;
-            imgEl.alt = cur.name;
+            imgEl.alt = cur.name || "روزيتا هاند ميد";
             imgEl.style.opacity = "1";
             imgEl.style.transform = "scale(1)";
           }, 220);
         } else {
           imgEl.src = cur.image;
-          imgEl.alt = cur.name;
+          imgEl.alt = cur.name || "روزيتا هاند ميد";
         }
       }
 
-      if (badgeEl) badgeEl.textContent = cur.badge || "عرض خاص";
-      if (titleEl) titleEl.textContent = cur.name;
-      if (priceEl) priceEl.textContent = formatEGP(cur.price);
+      if (captionWrap) {
+        if (cur.name && cur.name.trim()) {
+          captionWrap.classList.remove("hidden");
+          if (titleEl) titleEl.textContent = cur.name;
+          if (badgeEl) {
+            badgeEl.textContent = cur.badge || "";
+            badgeEl.classList.toggle("hidden", !cur.badge);
+          }
+        } else {
+          captionWrap.classList.add("hidden");
+        }
+      }
 
       renderHeroDots();
     }
@@ -2301,19 +2288,18 @@
 
       // Populate current slides list
       if (slides.length === 0) {
-        listContainer.innerHTML = '<p class="text-xs text-gray-500 text-center py-6">لا توجد شرائح في السلايدر حالياً. اختر من البوكيهات بالأعلى أو اضغط استعادة الافتراضي.</p>';
+        listContainer.innerHTML = '<p class="text-xs text-gray-500 text-center py-6">لا توجد صور في السلايدر حالياً. ارفع صورة من جهازك بالأعلى أو اضغط استعادة الافتراضي.</p>';
       } else {
         listContainer.innerHTML = slides.map((slide, idx) => `
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 rounded-2xl border border-pink-100 bg-[#FFF5F7]/40" data-hero-slide-id="${slide.id}">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 rounded-2xl border border-pink-100 bg-[#FFF5F7]/40" data-hero-slide-id="${slide.id}">
             <div class="flex items-center gap-3 min-w-0">
-              <img src="${slide.image}" alt="${slide.name}" class="w-14 h-14 rounded-xl object-cover shrink-0 border border-pink-200 shadow-sm" />
+              <img src="${slide.image}" alt="صورة السلايدر" class="w-24 h-14 rounded-xl object-cover shrink-0 border border-pink-200 shadow-sm" />
               <div class="min-w-0">
                 <div class="flex items-center gap-2 flex-wrap">
-                  <span class="text-xs font-black text-gray-400">#${idx + 1}</span>
-                  <span class="text-sm font-extrabold text-[#1A0A14] truncate">${slide.name}</span>
-                  ${slide.badge ? `<span class="text-[11px] px-2 py-0.5 rounded-full bg-pink-100 text-[#D81B60] font-bold">${slide.badge}</span>` : ""}
+                  <span class="text-xs font-black text-[#D81B60]">صورة #${idx + 1}</span>
+                  <span class="text-sm font-bold text-[#1A0A14] truncate">${slide.name || 'صورة نقية (بدون عنوان)'}</span>
                 </div>
-                <div class="text-xs font-extrabold text-[#0F5247] mt-0.5">${formatEGP(slide.price)}</div>
+                <div class="text-[11px] text-gray-500 mt-0.5 truncate">${slide.image.startsWith('data:') ? 'صورة مرفوعة من جهازك 📸' : slide.image}</div>
               </div>
             </div>
             <div class="flex items-center gap-1.5 shrink-0 self-end sm:self-auto">
@@ -3204,9 +3190,7 @@
           if (!state.heroSlides) state.heroSlides = [];
           state.heroSlides.push({
             id: "slide-" + Date.now(),
-            name: p.name,
-            badge: p.badge || p.category,
-            price: p.price,
+            name: "",
             image: p.image,
             productId: p.id
           });
@@ -3214,7 +3198,7 @@
           renderAdminHeroTab();
           renderAdmin();
           showHeroSlide(state.heroSlides.length - 1);
-          showToast(`تمت إضافة "${p.name}" إلى سلايدر الواجهة ✅`);
+          showToast(`تمت إضافة صورة "${p.name}" إلى سلايدر الواجهة ✅`);
         });
       }
 
@@ -3243,22 +3227,18 @@
         heroCustomForm.addEventListener("submit", (e) => {
           e.preventDefault();
           const title = document.getElementById("hero-custom-title").value.trim();
-          const badge = document.getElementById("hero-custom-badge").value.trim();
-          const price = Number(document.getElementById("hero-custom-price").value) || 0;
           const url = document.getElementById("hero-custom-url").value.trim();
-          const img = heroCustomImageBase64 || url || (state.products[0] ? state.products[0].image : "images/p1_velvet.jpg");
+          const img = heroCustomImageBase64 || url;
 
-          if (!title) {
-            showToast("يرجى إدخال عنوان الشريحة");
+          if (!img) {
+            showToast("يرجى اختيار صورة من جهازك أولاً 📸 أو كتابة رابط الصورة");
             return;
           }
 
           if (!state.heroSlides) state.heroSlides = [];
           state.heroSlides.push({
             id: "slide-" + Date.now(),
-            name: title,
-            badge: badge || "عرض خاص",
-            price: price,
+            name: title || "",
             image: img
           });
 
@@ -3270,7 +3250,7 @@
           heroCustomImageBase64 = "";
           const prev = document.getElementById("hero-custom-preview");
           if (prev) prev.classList.add("hidden");
-          showToast(`تمت إضافة شريحة "${title}" بنجاح! 🌸`);
+          showToast(title ? `تمت إضافة شريحة "${title}" بنجاح! 🌸` : "تمت إضافة الصورة للسلايدر بنجاح! 📸");
         });
       }
 

@@ -144,35 +144,23 @@
   "heroSlides": [
     {
       "id": "slide-1",
-      "name": "بوكيه ورد قطيفة أحمر فاخر",
-      "badge": "قطيفة فاخر",
-      "price": 1355,
-      "image": "images/p1_velvet.jpg",
-      "productId": "prod-1"
+      "image": "images/banner1_hd.jpg",
+      "name": ""
     },
     {
       "id": "slide-2",
-      "name": "بوكيه ورد ستان هاند ميد",
-      "badge": "الأكثر طلباً",
-      "price": 450,
-      "image": "images/p2_satin_450.jpg",
-      "productId": "prod-2"
+      "image": "images/banner2_hd.jpg",
+      "name": ""
     },
     {
       "id": "slide-3",
-      "name": "بوكيه ورد ستان ملكي كبير",
-      "badge": "حجم كبير",
-      "price": 1000,
-      "image": "images/p3_satin_1000.jpg",
-      "productId": "prod-3"
+      "image": "images/banner3_hd.jpg",
+      "name": ""
     },
     {
       "id": "slide-4",
-      "name": "بوكيه ورد ستان بتول بليسيه",
-      "badge": "تخصيص عبارة",
-      "price": 750,
-      "image": "images/p4_satin_750.jpg",
-      "productId": "prod-4"
+      "image": "images/banner4_hd.jpg",
+      "name": ""
     }
   ],
   "settings": {
