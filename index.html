@@ -1070,28 +1070,28 @@
         num: 1,
         title: "بوكيه ورد روزيتا 💐",
         video: "videos/reel1.mp4",
-        fallback: "https://videos.pexels.com/video-files/12302391/12302391-sd_540_960_30fps.mp4"
+        fallback: ""
       },
       {
         id: "reel-2",
         num: 2,
         title: "تنسيق ورد أنيق 🌸",
         video: "videos/reel2.mp4",
-        fallback: "https://videos.pexels.com/video-files/6318228/6318228-sd_540_960_25fps.mp4"
+        fallback: ""
       },
       {
         id: "reel-3",
         num: 3,
         title: "لحظة تقديم البوكيه 🎁",
         video: "videos/reel3.mp4",
-        fallback: "https://videos.pexels.com/video-files/6685166/6685166-sd_640_360_30fps.mp4"
+        fallback: ""
       },
       {
         id: "reel-4",
         num: 4,
         title: "بوكيه ورد كلاسيك 🌹",
         video: "videos/reel4.mp4",
-        fallback: "https://videos.pexels.com/video-files/7809646/7809646-sd_640_360_30fps.mp4"
+        fallback: ""
       }
     ];
 
@@ -1117,7 +1117,7 @@
       cart: "rossetta_cart_v1",
       orders: "rossetta_orders_v1",
       settings: "rossetta_settings_v1",
-      reels: "rossetta_reels_v1"
+      reels: "rossetta_reels_v2"
     };
 
     function safeLoad(key, fallback) {
@@ -1143,7 +1143,7 @@
     // IndexedDB Persistent Storage for Large Media (Reels / Videos)
     // ==========================================
     const IDB_CONFIG = {
-      name: "rossetta_media_store",
+      name: "rossetta_media_store_v2",
       version: 1,
       store: "keyval"
     };
