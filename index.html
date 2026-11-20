@@ -607,6 +607,11 @@
         <button type="button" data-admin-tab="products" class="admin-tab-btn px-4 py-2 rounded-full text-xs sm:text-sm font-bold bg-[#D81B60] text-white shrink-0">المنتجات والبوكيهات</button>
         <button type="button" data-admin-tab="orders" class="admin-tab-btn px-4 py-2 rounded-full text-xs sm:text-sm font-bold bg-white text-[#1A0A14] border border-pink-200 shrink-0">الطلبات الواردة (<span id="admin-orders-count">0</span>)</button>
         <button type="button" data-admin-tab="reels" class="admin-tab-btn px-4 py-2 rounded-full text-xs sm:text-sm font-bold bg-white text-[#1A0A14] border border-pink-200 shrink-0">فيديوهات البانر (4)</button>
+        <button type="button" data-admin-tab="bot" class="admin-tab-btn px-4 py-2 rounded-full text-xs sm:text-sm font-bold bg-white text-[#1A0A14] border border-pink-200 shrink-0 flex items-center gap-1.5">
+          <i data-lucide="bot" class="w-3.5 h-3.5 text-[#D81B60]"></i>
+          <span>بوت استقبال الطلبات</span>
+          <span id="bot-tab-dot" class="w-2 h-2 rounded-full bg-gray-300"></span>
+        </button>
         <button type="button" data-admin-tab="settings" class="admin-tab-btn px-4 py-2 rounded-full text-xs sm:text-sm font-bold bg-white text-[#1A0A14] border border-pink-200 shrink-0">الإعدادات والرقم السري</button>
       </div>
 
@@ -759,7 +764,143 @@
           </div>
         </div>
 
-        <!-- Tab 4: Settings -->
+        <!-- Tab 4: Bot Integration (Order Receiving Bot) -->
+        <div id="admin-tab-bot" class="hidden space-y-6">
+          <!-- Bot Overview Card -->
+          <div class="bg-gradient-to-br from-pink-500/10 via-white to-pink-50/50 rounded-2xl border border-pink-100 p-5 sm:p-6 space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div class="flex items-center gap-3.5">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#D81B60] to-pink-500 text-white flex items-center justify-center shadow-md shrink-0">
+                  <i data-lucide="bot" class="w-6 h-6"></i>
+                </div>
+                <div>
+                  <h4 class="text-base font-extrabold text-[#1A0A14]">بوت استقبال الطلبات التلقائي</h4>
+                  <p class="text-xs text-[#1A0A14]/70 mt-0.5">يستقبل كل طلب جديد لحظياً مع كافة التفاصيل (اسم العميل، الهاتف، العنوان، المنتجات، الإجمالي) فور تأكيد الطلب</p>
+                </div>
+              </div>
+              <div id="bot-active-indicator" class="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-gray-100 text-gray-500 border border-gray-200 shrink-0 self-start sm:self-auto">
+                <span class="w-2 h-2 rounded-full bg-gray-400"></span>
+                <span>البوت معطل</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Configuration Cards -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Option 1: Telegram Bot (Primary & Free) -->
+            <div class="bg-white rounded-2xl border border-pink-100 p-5 sm:p-6 space-y-4 flex flex-col justify-between">
+              <div class="space-y-4">
+                <div class="flex items-center justify-between gap-2 border-b border-pink-100 pb-3">
+                  <div class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-xl bg-sky-500 text-white flex items-center justify-center shrink-0">
+                      <i data-lucide="send" class="w-4 h-4"></i>
+                    </div>
+                    <div>
+                      <h5 class="text-sm font-black text-[#1A0A14]">بوت تيليجرام (مجاني وفوري 100%)</h5>
+                      <span class="text-[11px] text-gray-500">الخيار الأسهل والأسرع لإشعارك بالطلبات على الهاتف</span>
+                    </div>
+                  </div>
+                  <label class="relative inline-flex items-center cursor-pointer shrink-0">
+                    <input type="checkbox" id="bot-telegram-enabled" class="sr-only peer">
+                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#D81B60]"></div>
+                  </label>
+                </div>
+
+                <div class="space-y-3">
+                  <div>
+                    <label class="block text-xs font-bold text-[#1A0A14] mb-1">توكن البوت (Bot Token)</label>
+                    <input type="text" id="bot-telegram-token" placeholder="مثال: 7123456789:AAHk12345..." class="w-full text-xs p-2.5 rounded-xl border border-pink-200 bg-white font-mono focus:outline-none focus:border-[#D81B60]" dir="ltr">
+                    <p class="text-[10px] text-[#1A0A14]/65 mt-1">
+                      للحصول عليه مجاناً: افتح <a href="https://t.me/BotFather" target="_blank" rel="noopener" class="text-[#D81B60] underline font-bold">@BotFather</a> على تيليجرام واضغط /newbot وضع اسماً للبوت.
+                    </p>
+                  </div>
+
+                  <div>
+                    <label class="block text-xs font-bold text-[#1A0A14] mb-1">معرّف الشات أو الجروب (Chat ID)</label>
+                    <input type="text" id="bot-telegram-chatid" placeholder="مثال: 123456789 أو -100xxxxxxxx" class="w-full text-xs p-2.5 rounded-xl border border-pink-200 bg-white font-mono focus:outline-none focus:border-[#D81B60]" dir="ltr">
+                    <p class="text-[10px] text-[#1A0A14]/65 mt-1">
+                      لمعرفة الـ ID الخاص بك: أرسل أي رسالة للبوت المجاني <a href="https://t.me/userinfobot" target="_blank" rel="noopener" class="text-[#D81B60] underline font-bold">@userinfobot</a> على تيليجرام وسيعطيك رقم الـ Id فوراً.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="pt-3 border-t border-pink-100 flex items-center gap-2">
+                <button type="button" id="test-telegram-btn" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-sky-50 text-sky-700 hover:bg-sky-100 border border-sky-200 transition-colors flex items-center gap-1.5">
+                  <i data-lucide="zap" class="w-3.5 h-3.5 text-sky-600"></i>
+                  <span>إرسال رسالة تجريبية للبوت</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Option 2: Custom Webhook / Discord (Optional) -->
+            <div class="bg-white rounded-2xl border border-pink-100 p-5 sm:p-6 space-y-4 flex flex-col justify-between">
+              <div class="space-y-4">
+                <div class="flex items-center justify-between gap-2 border-b border-pink-100 pb-3">
+                  <div class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-xl bg-purple-600 text-white flex items-center justify-center shrink-0">
+                      <i data-lucide="webhook" class="w-4 h-4"></i>
+                    </div>
+                    <div>
+                      <h5 class="text-sm font-black text-[#1A0A14]">ويب هوك خارجي (Discord / Zapier / Make)</h5>
+                      <span class="text-[11px] text-gray-500">لربط ديسكورد أو أتمتة Make / Zapier أو نظامك الخاص</span>
+                    </div>
+                  </div>
+                  <label class="relative inline-flex items-center cursor-pointer shrink-0">
+                    <input type="checkbox" id="bot-webhook-enabled" class="sr-only peer">
+                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#D81B60]"></div>
+                  </label>
+                </div>
+
+                <div class="space-y-3">
+                  <div>
+                    <label class="block text-xs font-bold text-[#1A0A14] mb-1">رابط الويب هوك (Webhook URL)</label>
+                    <input type="url" id="bot-webhook-url" placeholder="https://discord.com/api/webhooks/... أو رابط Make/Zapier" class="w-full text-xs p-2.5 rounded-xl border border-pink-200 bg-white font-mono focus:outline-none focus:border-[#D81B60]" dir="ltr">
+                    <p class="text-[10px] text-[#1A0A14]/65 mt-1">
+                      يدعم إرسال بيانات الطلب بصيغة JSON تلقائياً، ويعمل مباشرة مع Webhooks ديسكورد وسيناريوهات Make وZapier.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="pt-3 border-t border-pink-100 flex items-center gap-2">
+                <button type="button" id="test-webhook-btn" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-purple-50 text-purple-700 hover:bg-purple-100 border border-purple-200 transition-colors flex items-center gap-1.5">
+                  <i data-lucide="zap" class="w-3.5 h-3.5 text-purple-600"></i>
+                  <span>تجربة إرسال Webhook</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Save Bot Settings Bar -->
+          <div class="p-4 sm:p-5 rounded-2xl bg-white border border-pink-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="text-xs text-[#1A0A14]/75">
+              💡 <b>ملاحظة:</b> بمجرد تفعيل البوت وحفظ الإعدادات، سيصلك إشعار فوري وتلقائي على هاتفك في كل مرة يقوم فيها أي عميل بتأكيد طلب جديد من سلة الشراء.
+            </div>
+            <button type="button" id="save-bot-settings-btn" class="w-full sm:w-auto px-7 py-2.5 rounded-xl bg-[#D81B60] hover:bg-[#b0134b] text-white font-extrabold text-xs sm:text-sm transition-all shadow-md flex items-center justify-center gap-2 shrink-0">
+              <i data-lucide="check" class="w-4 h-4"></i>
+              <span>حفظ إعدادات البوت</span>
+            </button>
+          </div>
+
+          <!-- Quick Setup Guide -->
+          <div class="bg-pink-50/60 rounded-2xl border border-pink-100 p-5 text-xs text-[#1A0A14]/80 space-y-2.5">
+            <h6 class="font-extrabold text-[#D81B60] text-sm flex items-center gap-1.5">
+              <i data-lucide="help-circle" class="w-4 h-4"></i>
+              <span>خطوات سريعة لإنشاء بوت تيليجرام واستقبال الطلبات في دقيقتين:</span>
+            </h6>
+            <ol class="list-decimal list-inside space-y-1.5 mr-2 text-xs leading-relaxed">
+              <li>افتح تطبيق تيليجرام وابحث عن <b>@BotFather</b> (البوت الرسمي المعتمد بعلامة صح زرقاء)، واضغط Start ثم أرسل <code>/newbot</code>.</li>
+              <li>اختر اسماً لمتجرك (مثال: <code>Rossetta Orders</code>) ثم اسم مستخدم ينتهي بـ <code>bot</code> (مثال: <code>rossetta_orders_bot</code>).</li>
+              <li>سيرسل لك BotFather كود التوكن <b>Token</b> مباشرة، انسخه والصقه في خانة <b>توكن البوت</b> أعلاه.</li>
+              <li>ابحث عن بوت <b>@userinfobot</b> على تيليجرام وأرسل له أي كلمة، سيعطيك رقم الـ <b>Id</b> الخاص بحسابك. انسخه والصقه في خانة <b>معرّف الشات</b>. (أو إذا أردت استقبال الطلبات في جروب عمل، أضف البوت للجروب وضع ID الجروب).</li>
+              <li>افتح البوت الذي أنشأته واضغط <b>Start</b> (مهم جداً حتى يسمح له تيليجرام بمراسلتك).</li>
+              <li>فعل زر التشغيل بالأعلى، واضغط <b>"إرسال رسالة تجريبية للبوت"</b> للتأكد، ثم اضغط <b>"حفظ إعدادات البوت"</b>!</li>
+            </ol>
+          </div>
+        </div>
+
+        <!-- Tab 5: Settings -->
         <div id="admin-tab-settings" class="hidden">
           <div class="bg-white rounded-2xl border border-pink-100 p-6 max-w-xl space-y-4">
             <h4 class="text-base font-extrabold text-[#1A0A14]">إعدادات المتجر والأمان</h4>
@@ -951,7 +1092,18 @@
     const DEFAULT_SETTINGS = {
       pin: "2025",
       whatsapp: "201000000000",
-      facebook: "https://www.facebook.com/rwzyta.hand.myd"
+      facebook: "https://www.facebook.com/rwzyta.hand.myd",
+      bot: {
+        telegram: {
+          enabled: false,
+          token: "",
+          chatId: ""
+        },
+        webhook: {
+          enabled: false,
+          url: ""
+        }
+      }
     };
 
     const STORAGE_KEYS = {
@@ -1271,6 +1423,21 @@
       document.getElementById("set-whatsapp").value = state.settings.whatsapp;
       document.getElementById("set-fb").value = state.settings.facebook;
 
+      // Populate Bot Settings
+      const bot = (state.settings && state.settings.bot) || DEFAULT_SETTINGS.bot;
+      const tgEnabled = document.getElementById("bot-telegram-enabled");
+      const tgToken = document.getElementById("bot-telegram-token");
+      const tgChatId = document.getElementById("bot-telegram-chatid");
+      const whEnabled = document.getElementById("bot-webhook-enabled");
+      const whUrl = document.getElementById("bot-webhook-url");
+
+      if (tgEnabled) tgEnabled.checked = !!(bot.telegram && bot.telegram.enabled);
+      if (tgToken) tgToken.value = (bot.telegram && bot.telegram.token) || "";
+      if (tgChatId) tgChatId.value = (bot.telegram && bot.telegram.chatId) || "";
+      if (whEnabled) whEnabled.checked = !!(bot.webhook && bot.webhook.enabled);
+      if (whUrl) whUrl.value = (bot.webhook && bot.webhook.url) || "";
+      updateBotUIState();
+
       // Populate Reels
       renderAdminReelsTab();
     }
@@ -1395,6 +1562,9 @@
       state.orders.unshift(order);
       safeSave(STORAGE_KEYS.orders, state.orders);
 
+      // Notify connected bot (Telegram / Webhook)
+      sendOrderToBots(order);
+
       const waText = encodeURIComponent(
         `طلب جديد من متجر روزيتا (#${orderId})\n` +
         `الاسم: ${name}\nالموبايل: ${phone}\nالعنوان: ${address}\n\nالمنتجات:\n` +
@@ -1495,15 +1665,18 @@
         document.querySelectorAll("[data-admin-tab]").forEach(b => {
           const active = b.dataset.adminTab === state.activeAdminTab;
           b.className = active
-            ? "admin-tab-btn px-4 py-2 rounded-full text-xs sm:text-sm font-bold bg-[#D81B60] text-white shrink-0"
-            : "admin-tab-btn px-4 py-2 rounded-full text-xs sm:text-sm font-bold bg-white text-[#1A0A14] border border-pink-200 shrink-0";
+            ? "admin-tab-btn px-4 py-2 rounded-full text-xs sm:text-sm font-bold bg-[#D81B60] text-white shrink-0 inline-flex items-center gap-1.5"
+            : "admin-tab-btn px-4 py-2 rounded-full text-xs sm:text-sm font-bold bg-white text-[#1A0A14] border border-pink-200 shrink-0 inline-flex items-center gap-1.5";
         });
-        ["products", "orders", "reels", "settings"].forEach(t => {
+        ["products", "orders", "reels", "bot", "settings"].forEach(t => {
           const el = document.getElementById(`admin-tab-${t}`);
           if (el) el.classList.toggle("hidden", t !== state.activeAdminTab);
         });
         if (state.activeAdminTab === "reels") {
           renderAdminReelsTab();
+        }
+        if (state.activeAdminTab === "bot") {
+          updateBotUIState();
         }
       });
     });
@@ -2009,6 +2182,230 @@
       if (window.lucide) lucide.createIcons();
     }
 
+    // ==========================================
+    // Order Receiving Bot Management (Telegram & Webhook)
+    // ==========================================
+    function updateBotUIState() {
+      const bot = (state.settings && state.settings.bot) || {};
+      const tgActive = !!(bot.telegram && bot.telegram.enabled && bot.telegram.token && bot.telegram.chatId);
+      const whActive = !!(bot.webhook && bot.webhook.enabled && bot.webhook.url);
+      const isActive = tgActive || whActive;
+
+      const dotEl = document.getElementById("bot-tab-dot");
+      const indicatorEl = document.getElementById("bot-active-indicator");
+
+      if (dotEl) {
+        dotEl.className = isActive ? "w-2 h-2 rounded-full bg-emerald-500 animate-pulse" : "w-2 h-2 rounded-full bg-gray-300";
+      }
+
+      if (indicatorEl) {
+        if (isActive) {
+          indicatorEl.className = "flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 shrink-0";
+          indicatorEl.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span><span>البوت نشط (${tgActive ? 'تيليجرام' : ''}${tgActive && whActive ? ' + ' : ''}${whActive ? 'ويب هوك' : ''})</span>`;
+        } else {
+          indicatorEl.className = "flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-gray-100 text-gray-500 border border-gray-200 shrink-0";
+          indicatorEl.innerHTML = `<span class="w-2 h-2 rounded-full bg-gray-400"></span><span>البوت معطل</span>`;
+        }
+      }
+    }
+
+    async function sendOrderToBots(order) {
+      const bot = (state.settings && state.settings.bot) || {};
+
+      // 1. Telegram Bot Notification
+      if (bot.telegram && bot.telegram.enabled && bot.telegram.token && bot.telegram.chatId) {
+        try {
+          const token = bot.telegram.token.trim();
+          const chatId = bot.telegram.chatId.trim();
+
+          const itemsText = (order.items || []).map(i => {
+            let line = `• <b>${i.name}</b> ×${i.qty} (${formatEGP(i.price * i.qty)})`;
+            if (i.customNote) line += `\n   <i>[ملاحظة: ${i.customNote}]</i>`;
+            if (i.wrapColor) line += `\n   <i>[التغليف: ${i.wrapColor}]</i>`;
+            return line;
+          }).join('\n');
+
+          const msg = `🛍️ <b>طلب جديد في متجر روزيتا! (#${order.id})</b>\n` +
+            `━━━━━━━━━━━━━━━━━━━━\n` +
+            `👤 <b>العميل:</b> ${order.customerName}\n` +
+            `📞 <b>الهاتف:</b> ${order.phone}\n` +
+            `📍 <b>العنوان:</b> ${order.address}\n` +
+            `📅 <b>التاريخ:</b> ${order.date}\n\n` +
+            `💐 <b>المنتجات المطلوبة:</b>\n${itemsText}\n\n` +
+            `💰 <b>الإجمالي:</b> <b>${formatEGP(order.total)}</b>\n` +
+            `━━━━━━━━━━━━━━━━━━━━\n` +
+            `✨ افتح لوحة تحكم المتجر لمتابعة التجهيز والتوصيل.`;
+
+          fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              chat_id: chatId,
+              text: msg,
+              parse_mode: "HTML"
+            })
+          }).catch(err => console.warn("Telegram bot error:", err));
+        } catch (err) {
+          console.warn("Telegram notification error:", err);
+        }
+      }
+
+      // 2. Custom Webhook (Discord / Make / Zapier)
+      if (bot.webhook && bot.webhook.enabled && bot.webhook.url) {
+        try {
+          const url = bot.webhook.url.trim();
+          const isDiscord = url.includes("discord.com/api/webhooks");
+          const payload = isDiscord ? {
+            content: `🌸 **طلب جديد في متجر روزيتا (#${order.id})**\n` +
+              `**العميل:** ${order.customerName} | **الهاتف:** ${order.phone}\n` +
+              `**العنوان:** ${order.address}\n` +
+              `**الإجمالي:** ${formatEGP(order.total)}\n` +
+              `**المنتجات:**\n` +
+              (order.items || []).map(i => `- ${i.name} ×${i.qty} (${formatEGP(i.price * i.qty)})`).join('\n')
+          } : {
+            event: "new_order",
+            store: "ROSSETTA",
+            orderId: order.id,
+            customerName: order.customerName,
+            phone: order.phone,
+            address: order.address,
+            total: order.total,
+            items: order.items,
+            date: order.date
+          };
+
+          fetch(url, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          }).catch(err => console.warn("Webhook send error:", err));
+        } catch (err) {
+          console.warn("Webhook error:", err);
+        }
+      }
+    }
+
+    function initBotHandlers() {
+      // Toggle checkboxes
+      const tgCheckbox = document.getElementById("bot-telegram-enabled");
+      const whCheckbox = document.getElementById("bot-webhook-enabled");
+
+      if (tgCheckbox) {
+        tgCheckbox.addEventListener("change", () => {
+          showToast(tgCheckbox.checked ? "تم تفعيل بوت تيليجرام (اضغط حفظ الإعدادات لتثبيته)" : "تم تعطيل بوت تيليجرام مؤقتاً");
+        });
+      }
+      if (whCheckbox) {
+        whCheckbox.addEventListener("change", () => {
+          showToast(whCheckbox.checked ? "تم تفعيل الويب هوك (اضغط حفظ الإعدادات لتثبيته)" : "تم تعطيل الويب هوك مؤقتاً");
+        });
+      }
+
+      // Save Bot Settings
+      const saveBtn = document.getElementById("save-bot-settings-btn");
+      if (saveBtn) {
+        saveBtn.addEventListener("click", () => {
+          const tgEnabled = document.getElementById("bot-telegram-enabled").checked;
+          const tgToken = document.getElementById("bot-telegram-token").value.trim();
+          const tgChatId = document.getElementById("bot-telegram-chatid").value.trim();
+
+          const whEnabled = document.getElementById("bot-webhook-enabled").checked;
+          const whUrl = document.getElementById("bot-webhook-url").value.trim();
+
+          if (!state.settings) state.settings = {};
+          state.settings.bot = {
+            telegram: {
+              enabled: tgEnabled,
+              token: tgToken,
+              chatId: tgChatId
+            },
+            webhook: {
+              enabled: whEnabled,
+              url: whUrl
+            }
+          };
+
+          safeSave(STORAGE_KEYS.settings, state.settings);
+          updateBotUIState();
+          showToast("تم حفظ إعدادات البوت بنجاح! 🤖");
+        });
+      }
+
+      // Test Telegram Bot
+      const testTgBtn = document.getElementById("test-telegram-btn");
+      if (testTgBtn) {
+        testTgBtn.addEventListener("click", async () => {
+          const token = document.getElementById("bot-telegram-token").value.trim();
+          const chatId = document.getElementById("bot-telegram-chatid").value.trim();
+
+          if (!token || !chatId) {
+            showToast("يرجى إدخال توكن البوت ومعرّف الشات أولاً");
+            return;
+          }
+
+          showToast("جاري إرسال رسالة الاختبار إلى تيليجرام...");
+          try {
+            const testMsg = `🌸 <b>تجربة بوت متجر روزيتا | ROSSETTA</b>\n\n` +
+              `تهانينا! البوت متصل بنجاح وجاهز لاستقبال إشعارات الطلبات الجديدة لحظة بلحظة 🚀\n` +
+              `⏰ <b>الوقت:</b> ${new Date().toLocaleTimeString("ar-EG")}`;
+
+            const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                chat_id: chatId,
+                text: testMsg,
+                parse_mode: "HTML"
+              })
+            });
+
+            const data = await res.json();
+            if (data.ok) {
+              showToast("تم إرسال رسالة الاختبار بنجاح إلى التيليجرام! تفقد هاتفك ✅");
+            } else {
+              showToast("خطأ: " + (data.description || "تأكد من صحة التوكن ورقم الشات والضغط على Start في البوت أولاً"));
+            }
+          } catch (err) {
+            showToast("تعذر الاتصال بـ Telegram API. تأكد من اتصال الإنترنت.");
+          }
+        });
+      }
+
+      // Test Webhook
+      const testWhBtn = document.getElementById("test-webhook-btn");
+      if (testWhBtn) {
+        testWhBtn.addEventListener("click", async () => {
+          const url = document.getElementById("bot-webhook-url").value.trim();
+          if (!url) {
+            showToast("يرجى إدخال رابط الويب هوك أولاً");
+            return;
+          }
+
+          showToast("جاري إرسال التجربة إلى الويب هوك...");
+          try {
+            const isDiscord = url.includes("discord.com/api/webhooks");
+            const payload = isDiscord ? {
+              content: "🌸 **تجربة بوت متجر روزيتا:** تم الاتصال بالويب هوك بنجاح وجاهز لاستقبال الطلبات!"
+            } : {
+              event: "test_connection",
+              message: "ROSSETTA Webhook Test Successful!",
+              timestamp: new Date().toISOString()
+            };
+
+            await fetch(url, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(payload)
+            });
+
+            showToast("تم إرسال التجربة إلى الويب هوك بنجاح ✅");
+          } catch (err) {
+            showToast("تعذر الإرسال إلى الويب هوك. تحقق من صحة الرابط.");
+          }
+        });
+      }
+    }
+
     // Init
     window.addEventListener("DOMContentLoaded", () => {
       document.getElementById("social-fb-link").href = state.settings.facebook || "https://www.facebook.com/rwzyta.hand.myd";
@@ -2016,6 +2413,8 @@
       renderCart();
       initHeroSlider();
       renderCustomerReels();
+      initBotHandlers();
+      updateBotUIState();
       lucide.createIcons();
 
       const resetAllReelsBtn = document.getElementById("reset-all-reels-btn");
